@@ -4,6 +4,9 @@ export interface Donor {
   name: string;
   pan?: string;
   address?: string;
+  city?: string;
+  email?: string;
+  phone?: string;
   amount: number;
   date: string;
   mode?: string;
@@ -15,7 +18,9 @@ export interface Donor {
 export interface FoundationInfo {
   name: string;
   tagline: string;
+  subTagline: string;
   address: string;
+  city: string;
   cin: string;
   pan: string;
   reg80G: string;
@@ -25,13 +30,15 @@ export interface FoundationInfo {
 }
 
 export const DEFAULT_FOUNDATION: FoundationInfo = {
-  name: "HUManity Foundation",
-  tagline: "Making Mankind Together",
-  address: "123, Sector 18, Gurugram, Haryana – 122015",
-  cin: "U85300HR2020NPL089123",
-  pan: "AABCH1234A",
-  reg80G: "AABCH1234AA20211",
-  email: "info@humanityfoundation.org",
-  website: "www.humanityfoundation.org",
-  phone: "+91 98765 43210",
+  name: "Humanity Uplifting Mankind Foundation",
+  tagline: "Humanity Uplifting Mankind",
+  subTagline: "Registered under section 8 companies act",
+  address: "LIG 155/5, 1st floor, Sector 5, MVP Colony, Visakhapatnam",
+  city: "Visakhapatnam",
+  cin: "U85190AP2021NPL120322",
+  pan: "AAGCH0887D",
+  reg80G: "AAGCH0887DF20225",
+  email: "contact@humanityorg.in",
+  website: "www.humanityorg.in",
+  phone: "",
 };

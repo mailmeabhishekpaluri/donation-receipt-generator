@@ -2,25 +2,33 @@ import * as XLSX from "xlsx";
 import { Donor } from "./types";
 import { generateReceiptNumber } from "./indic";
 
-// Flexible column name matching
 const COL_MAP: Record<string, string> = {
   // name
   name: "name", donor: "name", donorname: "name", "donor name": "name",
   "contributor name": "name", contributor: "name",
   // pan
   pan: "pan", "pan no": "pan", "pan number": "pan", pannumber: "pan",
+  "pan card no": "pan", "pan card number": "pan",
   // address
   address: "address", addr: "address", "donor address": "address",
+  // city
+  city: "city", place: "city", location: "city",
+  // email
+  email: "email", "email id": "email", emailid: "email", "e mail": "email",
+  // phone
+  phone: "phone", mobile: "phone", "phone no": "phone", "mobile no": "phone",
+  "contact no": "phone", contact: "phone",
   // amount
   amount: "amount", donation: "amount", "amount donated": "amount",
-  "donation amount": "amount", sum: "amount",
+  "donation amount": "amount", sum: "amount", "rs": "amount",
   // date
   date: "date", "donation date": "date", "receipt date": "date", donationdate: "date",
   // mode
   mode: "mode", "payment mode": "mode", paymentmode: "mode", "mode of payment": "mode",
-  // cheque
+  // cheque/details
   chequeno: "chequeNo", "cheque no": "chequeNo", "cheque number": "chequeNo",
   chequenumber: "chequeNo", cheque: "chequeNo", "dd no": "chequeNo",
+  details: "chequeNo", reference: "chequeNo", "reference no": "chequeNo",
   // bank
   bank: "bankName", bankname: "bankName", "bank name": "bankName",
 };
@@ -60,6 +68,9 @@ export function parseFile(buffer: ArrayBuffer): Donor[] {
         name: mapped.name,
         pan: mapped.pan,
         address: mapped.address,
+        city: mapped.city,
+        email: mapped.email,
+        phone: mapped.phone,
         amount: mapped.amount ?? 0,
         date,
         mode: mapped.mode ?? "Cash",
@@ -71,22 +82,12 @@ export function parseFile(buffer: ArrayBuffer): Donor[] {
     .filter((d): d is Donor => d !== null);
 }
 
-export function buildSampleCSV(): string {
-  const header = "Donor Name,PAN,Address,Amount,Date,Payment Mode,Cheque No,Bank Name";
-  const rows = [
-    "Rajesh Kumar,ABCPK1234A,\"12 MG Road, Bengaluru 560001\",10000,2025-08-01,Cheque,123456,SBI",
-    "Priya Sharma,BCDPS5678B,\"45 Park Street, Kolkata 700016\",25000,2025-08-02,NEFT,,HDFC Bank",
-    "Anand Verma,,\"7 Nehru Nagar, Delhi 110019\",5000,2025-08-03,Cash,,",
-  ];
-  return [header, ...rows].join("\n");
-}
-
 export function buildSampleXLSX(): ArrayBuffer {
   const data = [
-    ["Donor Name", "PAN", "Address", "Amount", "Date", "Payment Mode", "Cheque No", "Bank Name"],
-    ["Rajesh Kumar", "ABCPK1234A", "12 MG Road, Bengaluru 560001", 10000, "2025-08-01", "Cheque", "123456", "SBI"],
-    ["Priya Sharma", "BCDPS5678B", "45 Park Street, Kolkata 700016", 25000, "2025-08-02", "NEFT", "", "HDFC Bank"],
-    ["Anand Verma", "", "7 Nehru Nagar, Delhi 110019", 5000, "2025-08-03", "Cash", "", ""],
+    ["Donor Name", "PAN", "Address", "City", "Email", "Phone", "Amount", "Date", "Payment Mode", "Cheque No", "Bank Name"],
+    ["Rajesh Kumar", "ABCPK1234A", "12 MG Road, Bengaluru 560001", "Bengaluru", "rajesh@example.com", "9876543210", 10000, "2025-08-01", "Cheque", "123456", "SBI"],
+    ["Priya Sharma", "BCDPS5678B", "45 Park Street, Kolkata 700016", "Kolkata", "priya@example.com", "8765432109", 25000, "2025-08-02", "NEFT", "", "HDFC Bank"],
+    ["Anand Verma", "", "7 Nehru Nagar, Delhi 110019", "Delhi", "", "", 5000, "2025-08-03", "Cash", "", ""],
   ];
   const ws = XLSX.utils.aoa_to_sheet(data);
   const wb = XLSX.utils.book_new();

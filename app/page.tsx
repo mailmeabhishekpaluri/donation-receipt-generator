@@ -1,8 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { pdf } from "@react-pdf/renderer";
-import JSZip from "jszip";
 import { Donor, FoundationInfo } from "@/lib/types";
 import { parseFile, buildSampleXLSX } from "@/lib/excel";
 import { formatIndianCurrency } from "@/lib/indic";
@@ -55,11 +53,20 @@ export default function Home() {
     });
   }
 
-  async function previewSingle(donor: Donor) {
+  async function makePdfBlob(donor: Donor): Promise<Blob> {
+    const renderer = await import("@react-pdf/renderer");
     const doc = <ReceiptDoc donor={donor} foundation={foundation} useRealAssets={useRealAssets} />;
-    const blob = await pdf(doc).toBlob();
-    const url = URL.createObjectURL(blob);
-    window.open(url, "_blank");
+    return renderer.pdf(doc).toBlob();
+  }
+
+  async function previewSingle(donor: Donor) {
+    try {
+      const blob = await makePdfBlob(donor);
+      const url = URL.createObjectURL(blob);
+      window.open(url, "_blank");
+    } catch (e) {
+      alert("PDF generation failed: " + (e instanceof Error ? e.message : String(e)));
+    }
   }
 
   async function downloadSelected() {
@@ -68,16 +75,13 @@ export default function Home() {
     setBusy(true);
     try {
       if (targets.length === 1) {
-        const blob = await pdf(
-          <ReceiptDoc donor={targets[0]} foundation={foundation} useRealAssets={useRealAssets} />
-        ).toBlob();
+        const blob = await makePdfBlob(targets[0]);
         downloadBlob(blob, `Receipt_${targets[0].receiptNumber}.pdf`);
       } else {
+        const JSZip = (await import("jszip")).default;
         const zip = new JSZip();
         for (const donor of targets) {
-          const blob = await pdf(
-            <ReceiptDoc donor={donor} foundation={foundation} useRealAssets={useRealAssets} />
-          ).toBlob();
+          const blob = await makePdfBlob(donor);
           zip.file(`Receipt_${donor.receiptNumber}_${sanitise(donor.name)}.pdf`, blob);
         }
         const zipBlob = await zip.generateAsync({ type: "blob" });

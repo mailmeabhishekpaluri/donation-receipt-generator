@@ -23,12 +23,14 @@ interface Props {
   onChange: (info: FoundationInfo) => void;
 }
 
-const fields: { key: keyof FoundationInfo; label: string; type?: string }[] = [
+const fields: { key: keyof FoundationInfo; label: string }[] = [
   { key: "name", label: "Foundation Name" },
-  { key: "tagline", label: "Tagline" },
+  { key: "tagline", label: "Tagline (under logo)" },
+  { key: "subTagline", label: "Sub-tagline (e.g. Registered under...)" },
   { key: "address", label: "Address" },
+  { key: "city", label: "City" },
   { key: "cin", label: "CIN" },
-  { key: "pan", label: "PAN" },
+  { key: "pan", label: "PAN Card Number" },
   { key: "reg80G", label: "80G Registration Number" },
   { key: "email", label: "Email" },
   { key: "website", label: "Website" },

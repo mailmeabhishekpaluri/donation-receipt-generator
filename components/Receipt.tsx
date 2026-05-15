@@ -2,288 +2,335 @@
 "use client";
 
 import React from "react";
-import {
-  Document,
-  Page,
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Font,
-} from "@react-pdf/renderer";
+import { Document, Page, View, Text, Image, StyleSheet } from "@react-pdf/renderer";
 import { Donor, FoundationInfo } from "@/lib/types";
 import { amountInWords, formatIndianCurrency } from "@/lib/indic";
 
-Font.register({
-  family: "NotoSans",
-  fonts: [
-    { src: "https://fonts.gstatic.com/s/notosans/v28/o-0IIpQlx3QUlC5A4PNb4g.woff2" },
-    {
-      src: "https://fonts.gstatic.com/s/notosans/v28/o-0NIpQlx3QUlC5A4PNjXhFVatyBx2pqPIif.woff2",
-      fontWeight: "bold",
-    },
-  ],
-});
-
 const BLUE = "#3191c2";
-const DARK_BLUE = "#1a6e9e";
-const YELLOW = "#F5C518";
-const LIGHT_GRAY = "#f5f7fa";
-const BORDER = "#dde3ea";
+const WHITE = "#ffffff";
+const BLACK = "#000000";
 
 const s = StyleSheet.create({
-  page: { fontFamily: "NotoSans", fontSize: 9, color: "#1a1a1a", backgroundColor: "#fff" },
-  // Header band
-  header: { backgroundColor: DARK_BLUE, paddingHorizontal: 28, paddingVertical: 14, flexDirection: "row", alignItems: "center" },
-  logoBox: { width: 52, height: 52, marginRight: 14 },
-  headerText: { flex: 1 },
-  orgName: { fontSize: 17, fontWeight: "bold", color: "#fff", letterSpacing: 0.5 },
-  tagline: { fontSize: 8, color: YELLOW, marginTop: 2, letterSpacing: 1 },
-  headerRight: { alignItems: "flex-end" },
-  receiptLabel: { fontSize: 10, color: YELLOW, fontWeight: "bold", letterSpacing: 1 },
-  receiptNo: { fontSize: 14, color: "#fff", fontWeight: "bold", marginTop: 2 },
-  // Yellow bar
-  yellowBar: { backgroundColor: YELLOW, height: 3 },
-  // Body
-  body: { paddingHorizontal: 28, paddingTop: 14 },
-  // Date row
-  dateRow: { flexDirection: "row", justifyContent: "flex-end", marginBottom: 12 },
-  dateText: { fontSize: 8.5, color: "#555" },
-  // Section title
-  sectionTitle: { fontSize: 8, color: DARK_BLUE, fontWeight: "bold", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 5 },
-  // Certified block
-  certifiedBox: { backgroundColor: LIGHT_GRAY, borderLeft: `3 solid ${BLUE}`, padding: 10, marginBottom: 12 },
-  certText: { lineHeight: 1.7 },
-  highlight: { fontWeight: "bold", color: DARK_BLUE },
-  // Info grid
-  infoGrid: { flexDirection: "row", gap: 10, marginBottom: 12 },
-  infoBox: { flex: 1, border: `1 solid ${BORDER}`, borderRadius: 4, padding: 8 },
-  infoLabel: { fontSize: 7.5, color: "#888", marginBottom: 2 },
-  infoValue: { fontSize: 9, fontWeight: "bold", color: "#1a1a1a" },
-  // Amount box
-  amountBox: { backgroundColor: DARK_BLUE, borderRadius: 6, padding: 12, marginBottom: 14, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  amountLabel: { fontSize: 9, color: "#cce6f5" },
-  amountValue: { fontSize: 20, color: "#fff", fontWeight: "bold" },
-  amountWords: { fontSize: 8, color: YELLOW, marginTop: 3 },
-  // Purpose
-  purposeRow: { flexDirection: "row", marginBottom: 12 },
-  purposeBox: { flex: 1, border: `1 solid ${BORDER}`, borderRadius: 4, padding: 8, marginRight: 8 },
-  // 80G note
-  note80G: { backgroundColor: "#fffbea", border: `1 solid #f5c518`, borderRadius: 4, padding: 8, marginBottom: 12 },
-  // Signature row
-  sigRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end", marginTop: 10, marginBottom: 12 },
-  sigBox: { alignItems: "center" },
-  sigImage: { width: 80, height: 36, marginBottom: 4 },
-  sigLine: { width: 120, borderBottom: `1 solid #999`, marginBottom: 4 },
-  sigLabel: { fontSize: 7.5, color: "#555" },
-  sealBox: { alignItems: "center" },
-  sealImage: { width: 56, height: 56 },
-  // Footer
-  footer: { backgroundColor: DARK_BLUE, paddingHorizontal: 28, paddingVertical: 8, flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  footerText: { fontSize: 7, color: "#cce6f5" },
-  footerBold: { fontWeight: "bold", color: "#fff" },
-  // Divider
-  divider: { height: 1, backgroundColor: BORDER, marginBottom: 10 },
+  page: {
+    fontSize: 9,
+    color: BLACK,
+    backgroundColor: WHITE,
+    fontFamily: "Helvetica",
+    paddingBottom: 0,
+  },
+
+  // ── Header band ──────────────────────────────────────────────
+  header: {
+    backgroundColor: BLUE,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    minHeight: 72,
+  },
+  logoBox: {
+    width: 90,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 12,
+    flexShrink: 0,
+  },
+  logoInner: {
+    backgroundColor: BLUE,
+    borderWidth: 2,
+    borderColor: WHITE,
+    paddingHorizontal: 6,
+    paddingVertical: 4,
+    alignItems: "center",
+  },
+  logoH: { fontSize: 22, fontFamily: "Helvetica-Bold", color: WHITE },
+  logoU: { fontSize: 7, color: WHITE, marginTop: 1 },
+  logoTagline: { fontSize: 6.5, color: WHITE, marginTop: 2, textAlign: "center" },
+  headerCenter: { flex: 1, alignItems: "center", justifyContent: "center" },
+  orgName: {
+    fontSize: 18,
+    fontFamily: "Helvetica-Bold",
+    color: WHITE,
+    textAlign: "center",
+    marginBottom: 3,
+  },
+  orgSub: { fontSize: 8, color: WHITE, textAlign: "center", fontFamily: "Helvetica-Bold" },
+  orgAddr: { fontSize: 8, color: WHITE, textAlign: "center", marginTop: 2 },
+  handshakeBox: {
+    width: 60,
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 12,
+    flexShrink: 0,
+  },
+
+  // ── Body ──────────────────────────────────────────────────────
+  body: { paddingHorizontal: 20, paddingTop: 8, paddingBottom: 4, flex: 1 },
+
+  // Receipt No / Date row
+  receiptDateRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  receiptNo: { fontSize: 9, fontFamily: "Helvetica-Bold" },
+
+  // ── Form field helpers ────────────────────────────────────────
+  row: { flexDirection: "row", alignItems: "flex-end", marginBottom: 8 },
+  label: { fontSize: 8.5, fontFamily: "Helvetica-Bold", marginRight: 4, whiteSpace: "nowrap" },
+  field: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: BLACK,
+    paddingBottom: 1,
+    fontSize: 9,
+    fontFamily: "Helvetica-Bold",
+    textAlign: "center",
+    minHeight: 14,
+  },
+  fieldSub: { fontSize: 6.5, color: "#555", textAlign: "center", marginTop: 1 },
+  spacer: { width: 10 },
+
+  // ── Name row ─────────────────────────────────────────────────
+  nameRow: { flexDirection: "row", alignItems: "flex-end", marginBottom: 2 },
+  nameLabels: { flexDirection: "row", marginBottom: 8 },
+  nameLabel: { flex: 1, fontSize: 6.5, color: "#555", textAlign: "center" },
+
+  // ── Amount row ───────────────────────────────────────────────
+  divider: { borderBottomWidth: 1, borderBottomColor: BLACK, marginVertical: 6 },
+
+  // ── Registration box ─────────────────────────────────────────
+  regBox: {
+    borderWidth: 1,
+    borderColor: BLACK,
+    backgroundColor: "#daeef8",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    paddingVertical: 5,
+    paddingHorizontal: 8,
+    marginBottom: 6,
+  },
+  regItem: { fontSize: 7.5, fontFamily: "Helvetica-Bold", textAlign: "center" },
+
+  // ── Footer text ───────────────────────────────────────────────
+  footerRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end" },
+  footerLeft: { flex: 1, paddingRight: 20 },
+  footerText: { fontSize: 7.5, marginBottom: 3 },
+  footerBold: { fontFamily: "Helvetica-Bold" },
+  footerRight: { alignItems: "center", minWidth: 90 },
+  sealBox: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    borderWidth: 2,
+    borderColor: BLUE,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 4,
+  },
+  sealText: { fontSize: 5.5, color: BLUE, textAlign: "center" },
+  sigLabel: { fontSize: 7.5, fontFamily: "Helvetica-Bold", textAlign: "center" },
+
+  // 80G row
+  g80Row: { flexDirection: "row", alignItems: "center", marginBottom: 6 },
+  circle: {
+    width: 11,
+    height: 11,
+    borderRadius: 5.5,
+    borderWidth: 1,
+    borderColor: BLACK,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 2,
+  },
+  circleText: { fontSize: 6, fontFamily: "Helvetica-Bold" },
 });
 
-// Placeholder SVG-drawn assets (replaced by <Image> when real PNGs are present)
-function LogoPlaceholder() {
+// ── Underline field with centred value ───────────────────────
+function Field({ value, flex = 1, sub }: { value?: string; flex?: number; sub?: string }) {
   return (
-    <View style={{ width: 52, height: 52, backgroundColor: YELLOW, borderRadius: 6, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ fontWeight: "bold", fontSize: 14, color: DARK_BLUE }}>H</Text>
+    <View style={{ flex, marginHorizontal: 2 }}>
+      <View style={[s.field, { flex: undefined }]}>
+        <Text>{value ?? ""}</Text>
+      </View>
+      {sub ? <Text style={s.fieldSub}>{sub}</Text> : null}
+    </View>
+  );
+}
+
+// ── Handshake placeholder (replaced by <Image> when PNG present) ──
+function HandshakePlaceholder() {
+  return (
+    <View style={{ width: 52, height: 52, borderWidth: 2, borderColor: WHITE, borderRadius: 26, alignItems: "center", justifyContent: "center" }}>
+      <Text style={{ fontSize: 20, color: WHITE }}>🤝</Text>
     </View>
   );
 }
 
 function SealPlaceholder() {
   return (
-    <View style={{ width: 56, height: 56, borderRadius: 28, border: `2 solid ${BLUE}`, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ fontSize: 7, color: BLUE, textAlign: "center" }}>OFFICIAL{"\n"}SEAL</Text>
+    <View style={s.sealBox}>
+      <Text style={s.sealText}>{"HUMANITY\nUPLIFTING\nMANKIND\nFOUNDATION"}</Text>
+      <Text style={[s.sealText, { marginTop: 2 }]}>NGO REG.</Text>
     </View>
   );
 }
 
-function SignaturePlaceholder() {
-  return (
-    <View style={{ width: 80, height: 36, borderBottom: `1 solid #999` }}>
-      <Text style={{ fontSize: 7, color: "#aaa", paddingTop: 12, paddingLeft: 6 }}>Authorised</Text>
-    </View>
-  );
-}
+const ORIGIN = typeof window !== "undefined" ? window.location.origin : "";
 
-function HandshakePlaceholder() {
-  return (
-    <View style={{ width: 32, height: 32, backgroundColor: YELLOW, borderRadius: 4, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ fontSize: 10 }}>🤝</Text>
-    </View>
-  );
-}
-
-const ASSET_BASE = typeof window !== "undefined" ? window.location.origin : "";
-
-function assetUrl(path: string) {
-  return `${ASSET_BASE}${path}`;
-}
-
-interface ReceiptProps {
+interface Props {
   donor: Donor;
   foundation: FoundationInfo;
-  // If true, use <Image> for assets (set to true when PNGs exist)
   useRealAssets?: boolean;
 }
 
-export function ReceiptDoc({ donor, foundation, useRealAssets = false }: ReceiptProps) {
-  const formattedDate = new Date(donor.date).toLocaleDateString("en-IN", {
-    day: "2-digit", month: "long", year: "numeric",
-  });
+export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) {
+  const d = new Date(donor.date);
+  const monthYear = d.toLocaleDateString("en-IN", { month: "long", year: "numeric" }).replace(" ", "-");
 
-  const paymentDetail =
-    donor.mode && donor.mode !== "Cash"
-      ? `${donor.mode}${donor.chequeNo ? ` No. ${donor.chequeNo}` : ""}${donor.bankName ? `, ${donor.bankName}` : ""}`
-      : donor.mode ?? "Cash";
+  const paymentDetails =
+    donor.chequeNo
+      ? `${donor.chequeNo}${donor.bankName ? " / " + donor.bankName : ""}`
+      : donor.bankName ?? "";
+
+  const city = donor.city || "";
 
   return (
     <Document>
-      <Page size="A4" style={s.page}>
-        {/* Header */}
+      <Page size="A4" orientation="landscape" style={s.page}>
+
+        {/* ── HEADER ── */}
         <View style={s.header}>
+          {/* Logo */}
           <View style={s.logoBox}>
             {useRealAssets ? (
-              <Image src={assetUrl("/assets/logo.png")} style={{ width: 52, height: 52 }} />
+              <Image src={`${ORIGIN}/assets/logo.png`} style={{ width: 80, height: 55 }} />
             ) : (
-              <LogoPlaceholder />
+              <View style={s.logoInner}>
+                <Text style={s.logoH}>HUManity</Text>
+                <Text style={s.logoTagline}>Humanity Uplifting Mankind</Text>
+              </View>
             )}
           </View>
-          <View style={s.headerText}>
+
+          {/* Centre text */}
+          <View style={s.headerCenter}>
             <Text style={s.orgName}>{foundation.name}</Text>
-            <Text style={s.tagline}>{foundation.tagline.toUpperCase()}</Text>
+            <Text style={s.orgSub}>{foundation.subTagline}</Text>
+            <Text style={s.orgAddr}>{foundation.address}</Text>
           </View>
-          <View style={s.headerRight}>
-            <Text style={s.receiptLabel}>DONATION RECEIPT</Text>
-            <Text style={s.receiptNo}>#{donor.receiptNumber}</Text>
+
+          {/* Handshake */}
+          <View style={s.handshakeBox}>
+            {useRealAssets ? (
+              <Image src={`${ORIGIN}/assets/handshake.png`} style={{ width: 52, height: 52 }} />
+            ) : (
+              <HandshakePlaceholder />
+            )}
           </View>
         </View>
 
-        {/* Yellow accent bar */}
-        <View style={s.yellowBar} />
-
+        {/* ── BODY ── */}
         <View style={s.body}>
-          {/* Date */}
-          <View style={s.dateRow}>
-            <Text style={s.dateText}>Date: <Text style={{ fontWeight: "bold" }}>{formattedDate}</Text></Text>
+
+          {/* Receipt No / Date */}
+          <View style={s.receiptDateRow}>
+            <Text style={s.receiptNo}>Receipt No: {donor.receiptNumber}</Text>
+            <Text style={s.receiptNo}>Date: {monthYear}</Text>
           </View>
 
-          {/* Certified block */}
-          <Text style={s.sectionTitle}>Certification</Text>
-          <View style={s.certifiedBox}>
-            <Text style={s.certText}>
-              This is to certify that{" "}
-              <Text style={s.highlight}>{donor.name}</Text>
-              {donor.pan ? (
-                <>
-                  {" "}(PAN: <Text style={s.highlight}>{donor.pan}</Text>)
-                </>
-              ) : null}
-              {donor.address ? (
-                <>, residing at <Text style={s.highlight}>{donor.address}</Text>,</>
-              ) : null}{" "}
-              has made a donation of{" "}
-              <Text style={s.highlight}>₹{formatIndianCurrency(donor.amount)}</Text>{" "}
-              to <Text style={s.highlight}>{foundation.name}</Text> on{" "}
-              <Text style={s.highlight}>{formattedDate}</Text> by {paymentDetail}.
-            </Text>
+          {/* Donated by + Place */}
+          <View style={s.nameRow}>
+            <Text style={s.label}>Donated by:</Text>
+            <Field value={donor.name} flex={3} />
+            <View style={s.spacer} />
+            <Text style={s.label}>Place:</Text>
+            <Field value={city} flex={1} />
+          </View>
+          <View style={s.nameLabels}>
+            {/* indent past the "Donated by:" label (~65pt) */}
+            <View style={{ width: 65 }} />
+            <Text style={[s.nameLabel, { flex: 1 }]}>(First name)</Text>
+            <Text style={[s.nameLabel, { flex: 2 }]}>(Last name)</Text>
+            <View style={{ width: 75 }} />
           </View>
 
-          {/* Info grid */}
-          <View style={s.infoGrid}>
-            <View style={s.infoBox}>
-              <Text style={s.infoLabel}>Donor Name</Text>
-              <Text style={s.infoValue}>{donor.name}</Text>
-            </View>
-            {donor.pan && (
-              <View style={s.infoBox}>
-                <Text style={s.infoLabel}>PAN</Text>
-                <Text style={s.infoValue}>{donor.pan}</Text>
-              </View>
-            )}
-            <View style={s.infoBox}>
-              <Text style={s.infoLabel}>Payment Mode</Text>
-              <Text style={s.infoValue}>{paymentDetail}</Text>
-            </View>
+          {/* Email / Phone */}
+          <View style={s.row}>
+            <Text style={s.label}>Email id:</Text>
+            <Field value={donor.email} flex={3} />
+            <View style={s.spacer} />
+            <Text style={s.label}>Phone:</Text>
+            <Field value={donor.phone} flex={1} />
           </View>
 
           {/* Amount */}
-          <View style={s.amountBox}>
-            <View>
-              <Text style={s.amountLabel}>Donation Amount</Text>
-              <Text style={s.amountWords}>{amountInWords(donor.amount)}</Text>
-            </View>
-            <View style={{ alignItems: "flex-end" }}>
-              <Text style={{ fontSize: 10, color: "#cce6f5" }}>₹</Text>
-              <Text style={s.amountValue}>{formatIndianCurrency(donor.amount)}</Text>
-            </View>
+          <View style={s.row}>
+            <Text style={s.label}>Amount Received:</Text>
+            <Field value={`Rs ${formatIndianCurrency(donor.amount)}/-`} flex={2} />
+            <View style={s.spacer} />
+            <Text style={s.label}>In words:</Text>
+            <Field value={amountInWords(donor.amount)} flex={3} />
           </View>
 
-          {/* Purpose + handshake */}
-          <View style={s.purposeRow}>
-            <View style={s.purposeBox}>
-              <Text style={s.infoLabel}>Purpose</Text>
-              <Text style={s.infoValue}>General Donation — Charitable Activities</Text>
-            </View>
-            <View style={{ justifyContent: "center", paddingLeft: 8 }}>
-              {useRealAssets ? (
-                <Image src={assetUrl("/assets/handshake.png")} style={{ width: 32, height: 32 }} />
-              ) : (
-                <HandshakePlaceholder />
-              )}
-            </View>
+          {/* Divider */}
+          <View style={s.divider} />
+
+          {/* Mode / Details / PAN */}
+          <View style={s.row}>
+            <Text style={s.label}>Mode of Payment:</Text>
+            <Field value={donor.mode ?? "Cash"} flex={1} />
+            <View style={s.spacer} />
+            <Text style={s.label}>Details:</Text>
+            <Field value={paymentDetails} flex={1} />
+            <View style={s.spacer} />
+            <Text style={s.label}>PAN card No:</Text>
+            <Field value={donor.pan} flex={1} />
           </View>
 
-          {/* 80G note */}
-          <View style={s.note80G}>
-            <Text style={{ fontSize: 8, color: "#7a5c00" }}>
-              <Text style={{ fontWeight: "bold" }}>80G Exemption:</Text> This donation is eligible for tax deduction under Section 80G of the Income Tax Act, 1961.{" "}
-              80G Reg. No.: <Text style={{ fontWeight: "bold" }}>{foundation.reg80G}</Text>
+          {/* 80G */}
+          <View style={s.g80Row}>
+            <Text style={s.label}>80 G tax exemption:</Text>
+            <View style={s.circle}><Text style={s.circleText}>Yes</Text></View>
+            <Text style={{ fontSize: 8 }}> / No</Text>
+            <Text style={{ fontSize: 7.5, marginLeft: 8 }}>
+              If Yes, we declare that the donation to the organisation is exempt u/s 80G.
             </Text>
           </View>
 
-          <View style={s.divider} />
+          {/* Registration box */}
+          <View style={s.regBox}>
+            <Text style={s.regItem}>CIN: {foundation.cin}</Text>
+            <Text style={s.regItem}>PAN CARD NUMBER: {foundation.pan}</Text>
+            <Text style={s.regItem}>80G NUMBER: {foundation.reg80G}</Text>
+          </View>
 
-          {/* Signature row */}
-          <View style={s.sigRow}>
-            <View style={s.sigBox}>
-              {useRealAssets ? (
-                <Image src={assetUrl("/assets/signature.png")} style={s.sigImage} />
-              ) : (
-                <SignaturePlaceholder />
-              )}
-              <Text style={s.sigLabel}>Authorised Signatory</Text>
-              <Text style={{ fontSize: 7.5, color: "#555", marginTop: 1 }}>{foundation.name}</Text>
+          {/* Footer */}
+          <View style={s.footerRow}>
+            <View style={s.footerLeft}>
+              <Text style={s.footerText}>
+                We hereby confirm that the aforementioned donation has been received by HUManity organisation, {foundation.city}.
+              </Text>
+              <Text style={s.footerText}>
+                In case of queries, reach out to us at{" "}
+                <Text style={s.footerBold}>{foundation.email}</Text>
+                {" "}or visit{" "}
+                <Text style={s.footerBold}>{foundation.website}</Text>
+              </Text>
             </View>
-            <View style={s.sealBox}>
+            <View style={s.footerRight}>
               {useRealAssets ? (
-                <Image src={assetUrl("/assets/seal.png")} style={s.sealImage} />
+                <Image src={`${ORIGIN}/assets/seal.png`} style={{ width: 64, height: 64, marginBottom: 4 }} />
               ) : (
                 <SealPlaceholder />
               )}
-              <Text style={{ fontSize: 7, color: "#555", marginTop: 3 }}>Official Seal</Text>
+              {useRealAssets ? (
+                <Image src={`${ORIGIN}/assets/signature.png`} style={{ width: 70, height: 28, marginBottom: 2 }} />
+              ) : null}
+              <Text style={s.sigLabel}>Authorised Signature</Text>
             </View>
           </View>
-        </View>
 
-        {/* Footer */}
-        <View style={s.footer}>
-          <View>
-            <Text style={s.footerText}>
-              <Text style={s.footerBold}>CIN:</Text> {foundation.cin}{"  "}
-              <Text style={s.footerBold}>PAN:</Text> {foundation.pan}
-            </Text>
-            <Text style={[s.footerText, { marginTop: 2 }]}>{foundation.address}</Text>
-          </View>
-          <View style={{ alignItems: "flex-end" }}>
-            <Text style={s.footerText}>{foundation.website}</Text>
-            <Text style={[s.footerText, { marginTop: 2 }]}>{foundation.email}</Text>
-          </View>
         </View>
       </Page>
     </Document>
