@@ -38,7 +38,7 @@ export const DEFAULT_FOUNDATION: FoundationInfo = {
   cin: "U85190AP2021NPL120322",
   pan: "AAGCH0887D",
   reg80G: "AAGCH0887DF20225",
-  email: "contact@humanityorg.in",
-  website: "www.humanityorg.in",
+  email: "contact@humanityorg.foundation",
+  website: "humanityorg.foundation",
   phone: "",
 };

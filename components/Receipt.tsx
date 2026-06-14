@@ -13,7 +13,7 @@ const LIGHT = "#daeef8";
 
 const s = StyleSheet.create({
   page: {
-    fontSize: 9,
+    fontSize: 9.5,
     color: BLACK,
     backgroundColor: WHITE,
     fontFamily: "Helvetica",
@@ -24,15 +24,17 @@ const s = StyleSheet.create({
     backgroundColor: BLUE,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    minHeight: 78,
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    minHeight: 96,
   },
-  logoWrap: {
+  // Logo on white card — generous white space around the image
+  logoCard: {
     backgroundColor: WHITE,
-    borderRadius: 4,
-    padding: 5,
-    marginRight: 14,
+    borderRadius: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginRight: 16,
     flexShrink: 0,
     alignItems: "center",
     justifyContent: "center",
@@ -43,11 +45,11 @@ const s = StyleSheet.create({
     justifyContent: "center",
   },
   orgName: {
-    fontSize: 19,
+    fontSize: 16,
     fontFamily: "Helvetica-Bold",
     color: WHITE,
     textAlign: "center",
-    marginBottom: 3,
+    marginBottom: 4,
   },
   orgSub: {
     fontSize: 8,
@@ -59,14 +61,14 @@ const s = StyleSheet.create({
     fontSize: 7.5,
     color: WHITE,
     textAlign: "center",
-    marginTop: 2,
+    marginTop: 3,
   },
 
   // ── Body ─────────────────────────────────────────────────────
   body: {
-    paddingHorizontal: 22,
-    paddingTop: 10,
-    paddingBottom: 6,
+    paddingHorizontal: 24,
+    paddingTop: 14,
+    paddingBottom: 8,
     flex: 1,
   },
 
@@ -74,12 +76,12 @@ const s = StyleSheet.create({
   receiptDateRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 10,
+    marginBottom: 12,
   },
-  receiptNo: { fontSize: 9, fontFamily: "Helvetica-Bold" },
+  receiptNo: { fontSize: 9.5, fontFamily: "Helvetica-Bold" },
 
   // ── Form field helpers ────────────────────────────────────────
-  row: { flexDirection: "row", alignItems: "flex-end", marginBottom: 9 },
+  row: { flexDirection: "row", alignItems: "flex-end", marginBottom: 10 },
   label: {
     fontSize: 8.5,
     fontFamily: "Helvetica-Bold",
@@ -91,36 +93,36 @@ const s = StyleSheet.create({
     flex: 1,
     borderBottomWidth: 1,
     borderBottomColor: BLACK,
-    paddingBottom: 1,
-    fontSize: 9,
+    paddingBottom: 2,
+    fontSize: 9.5,
     fontFamily: "Helvetica-Bold",
     textAlign: "center",
-    minHeight: 14,
+    minHeight: 15,
   },
   fieldSub: { fontSize: 6.5, color: "#555", textAlign: "center", marginTop: 1 },
   spacer: { width: 10 },
 
-  // Name sub-labels row
+  // Name sub-labels
   nameRow: { flexDirection: "row", alignItems: "flex-end", marginBottom: 2 },
-  nameLabels: { flexDirection: "row", marginBottom: 9 },
+  nameLabels: { flexDirection: "row", marginBottom: 10 },
   nameLabel: { flex: 1, fontSize: 6.5, color: "#555", textAlign: "center" },
 
   // Divider
-  divider: { borderBottomWidth: 1, borderBottomColor: BLACK, marginVertical: 6 },
+  divider: { borderBottomWidth: 1, borderBottomColor: BLACK, marginVertical: 8 },
 
   // 80G row
-  g80Row: { flexDirection: "row", alignItems: "center", marginBottom: 8 },
+  g80Row: { flexDirection: "row", alignItems: "center", marginBottom: 10 },
   circle: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
+    width: 13,
+    height: 13,
+    borderRadius: 6.5,
     borderWidth: 1,
     borderColor: BLACK,
     alignItems: "center",
     justifyContent: "center",
     marginHorizontal: 3,
   },
-  circleText: { fontSize: 6.5, fontFamily: "Helvetica-Bold" },
+  circleText: { fontSize: 7, fontFamily: "Helvetica-Bold" },
 
   // Registration box
   regBox: {
@@ -129,9 +131,9 @@ const s = StyleSheet.create({
     backgroundColor: LIGHT,
     flexDirection: "row",
     justifyContent: "space-around",
-    paddingVertical: 5,
+    paddingVertical: 6,
     paddingHorizontal: 8,
-    marginBottom: 8,
+    marginBottom: 10,
   },
   regItem: { fontSize: 7.5, fontFamily: "Helvetica-Bold", textAlign: "center" },
 
@@ -141,11 +143,16 @@ const s = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-end",
   },
-  footerLeft: { flex: 1, paddingRight: 20 },
+  footerLeft: { flex: 1, paddingRight: 16 },
   footerText: { fontSize: 7.5, marginBottom: 4 },
   footerBold: { fontFamily: "Helvetica-Bold" },
-  footerRight: { alignItems: "center", minWidth: 110 },
-  sigLabel: { fontSize: 7.5, fontFamily: "Helvetica-Bold", textAlign: "center", marginTop: 2 },
+  footerRight: { alignItems: "center", minWidth: 120 },
+  sigLabel: {
+    fontSize: 8,
+    fontFamily: "Helvetica-Bold",
+    textAlign: "center",
+    marginTop: 3,
+  },
 });
 
 function Field({ value, flex = 1, sub }: { value?: string; flex?: number; sub?: string }) {
@@ -179,26 +186,27 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
 
   return (
     <Document>
-      <Page size="A4" orientation="landscape" style={s.page}>
+      {/* Portrait A4 */}
+      <Page size="A4" style={s.page}>
 
         {/* ── HEADER ── */}
         <View style={s.header}>
-          {/* Logo on white card */}
-          <View style={s.logoWrap}>
+          {/* Logo — white card with ample padding so the logo breathes */}
+          <View style={s.logoCard}>
             {useRealAssets ? (
               <Image
                 src={`${ORIGIN}/assets/HUManity logo.png`}
-                style={{ width: 110, height: 42 }}
+                style={{ width: 130, height: 50 }}
               />
             ) : (
-              <View style={{ width: 110, height: 42, alignItems: "center", justifyContent: "center" }}>
-                <Text style={{ fontSize: 16, fontFamily: "Helvetica-Bold", color: BLUE }}>HUManity</Text>
-                <Text style={{ fontSize: 7, color: "#555" }}>Humanity Uplifting Mankind</Text>
+              <View style={{ width: 130, height: 50, alignItems: "center", justifyContent: "center" }}>
+                <Text style={{ fontSize: 18, fontFamily: "Helvetica-Bold", color: BLUE }}>HUManity</Text>
+                <Text style={{ fontSize: 7.5, color: "#555" }}>Humanity Uplifting Mankind</Text>
               </View>
             )}
           </View>
 
-          {/* Centre */}
+          {/* Centre text */}
           <View style={s.headerCenter}>
             <Text style={s.orgName}>{foundation.name}</Text>
             <Text style={s.orgSub}>{foundation.subTagline}</Text>
@@ -224,10 +232,10 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
             <Field value={donor.city} flex={1} />
           </View>
           <View style={s.nameLabels}>
-            <View style={{ width: 67 }} />
+            <View style={{ width: 69 }} />
             <Text style={[s.nameLabel, { flex: 1 }]}>(First name)</Text>
             <Text style={[s.nameLabel, { flex: 2 }]}>(Last name)</Text>
-            <View style={{ width: 72 }} />
+            <View style={{ width: 70 }} />
           </View>
 
           {/* Email / Phone */}
@@ -266,8 +274,8 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
           <View style={s.g80Row}>
             <Text style={s.label}>80 G tax exemption:</Text>
             <View style={s.circle}><Text style={s.circleText}>Yes</Text></View>
-            <Text style={{ fontSize: 8 }}> / No</Text>
-            <Text style={{ fontSize: 7.5, marginLeft: 8 }}>
+            <Text style={{ fontSize: 8.5 }}> / No</Text>
+            <Text style={{ fontSize: 8, marginLeft: 10 }}>
               If Yes, we declare that the donation to the organisation is exempt u/s 80G.
             </Text>
           </View>
@@ -283,8 +291,8 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
           <View style={s.footerRow}>
             <View style={s.footerLeft}>
               <Text style={s.footerText}>
-                We hereby confirm that the aforementioned donation has been received by HUManity
-                organisation, {foundation.city}.
+                We hereby confirm that the aforementioned donation has been received by
+                HUManity organisation, {foundation.city}.
               </Text>
               <Text style={s.footerText}>
                 In case of queries, reach out to us at{" "}
@@ -294,20 +302,20 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
               </Text>
             </View>
 
-            {/* Stamp + Signature */}
+            {/* Stamp (large) + Signature (large) */}
             <View style={s.footerRight}>
               {useRealAssets ? (
                 <Image
                   src={`${ORIGIN}/assets/humanity_donation_stamp.png`}
-                  style={{ width: 82, height: 82 }}
+                  style={{ width: 110, height: 110 }}
                 />
               ) : (
                 <View style={{
-                  width: 82, height: 82, borderRadius: 41,
+                  width: 110, height: 110, borderRadius: 55,
                   borderWidth: 2, borderColor: BLUE,
                   alignItems: "center", justifyContent: "center",
                 }}>
-                  <Text style={{ fontSize: 5.5, color: BLUE, textAlign: "center" }}>
+                  <Text style={{ fontSize: 6, color: BLUE, textAlign: "center" }}>
                     {"HUMANITY\nUPLIFTING\nMANKIND\nFOUNDATION\nNGO REG."}
                   </Text>
                 </View>
@@ -315,10 +323,10 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
               {useRealAssets ? (
                 <Image
                   src={`${ORIGIN}/assets/Abhishek Sign - Edited.png`}
-                  style={{ width: 82, height: 34, marginTop: 4 }}
+                  style={{ width: 110, height: 46, marginTop: 6 }}
                 />
               ) : (
-                <View style={{ width: 82, height: 34, marginTop: 4 }} />
+                <View style={{ width: 110, height: 46, marginTop: 6 }} />
               )}
               <Text style={s.sigLabel}>Authorised Signature</Text>
             </View>
