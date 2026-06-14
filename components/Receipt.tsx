@@ -6,9 +6,10 @@ import { Document, Page, View, Text, Image, StyleSheet } from "@react-pdf/render
 import { Donor, FoundationInfo } from "@/lib/types";
 import { amountInWords, formatIndianCurrency } from "@/lib/indic";
 
-const BLUE = "#3191c2";
+const BLUE  = "#3191c2";
 const WHITE = "#ffffff";
 const BLACK = "#000000";
+const LIGHT = "#daeef8";
 
 const s = StyleSheet.create({
   page: {
@@ -16,56 +17,58 @@ const s = StyleSheet.create({
     color: BLACK,
     backgroundColor: WHITE,
     fontFamily: "Helvetica",
-    paddingBottom: 0,
   },
 
-  // ── Header band ──────────────────────────────────────────────
+  // ── Header ───────────────────────────────────────────────────
   header: {
     backgroundColor: BLUE,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 10,
-    minHeight: 72,
+    minHeight: 78,
   },
-  logoBox: {
-    width: 90,
+  logoWrap: {
+    backgroundColor: WHITE,
+    borderRadius: 4,
+    padding: 5,
+    marginRight: 14,
+    flexShrink: 0,
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 12,
-    flexShrink: 0,
   },
-  logoInner: {
-    backgroundColor: BLUE,
-    borderWidth: 2,
-    borderColor: WHITE,
-    paddingHorizontal: 6,
-    paddingVertical: 4,
+  headerCenter: {
+    flex: 1,
     alignItems: "center",
+    justifyContent: "center",
   },
-  logoH: { fontSize: 22, fontFamily: "Helvetica-Bold", color: WHITE },
-  logoU: { fontSize: 7, color: WHITE, marginTop: 1 },
-  logoTagline: { fontSize: 6.5, color: WHITE, marginTop: 2, textAlign: "center" },
-  headerCenter: { flex: 1, alignItems: "center", justifyContent: "center" },
   orgName: {
-    fontSize: 18,
+    fontSize: 19,
     fontFamily: "Helvetica-Bold",
     color: WHITE,
     textAlign: "center",
     marginBottom: 3,
   },
-  orgSub: { fontSize: 8, color: WHITE, textAlign: "center", fontFamily: "Helvetica-Bold" },
-  orgAddr: { fontSize: 8, color: WHITE, textAlign: "center", marginTop: 2 },
-  handshakeBox: {
-    width: 60,
-    alignItems: "center",
-    justifyContent: "center",
-    marginLeft: 12,
-    flexShrink: 0,
+  orgSub: {
+    fontSize: 8,
+    color: WHITE,
+    textAlign: "center",
+    fontFamily: "Helvetica-Bold",
+  },
+  orgAddr: {
+    fontSize: 7.5,
+    color: WHITE,
+    textAlign: "center",
+    marginTop: 2,
   },
 
-  // ── Body ──────────────────────────────────────────────────────
-  body: { paddingHorizontal: 20, paddingTop: 8, paddingBottom: 4, flex: 1 },
+  // ── Body ─────────────────────────────────────────────────────
+  body: {
+    paddingHorizontal: 22,
+    paddingTop: 10,
+    paddingBottom: 6,
+    flex: 1,
+  },
 
   // Receipt No / Date row
   receiptDateRow: {
@@ -76,8 +79,14 @@ const s = StyleSheet.create({
   receiptNo: { fontSize: 9, fontFamily: "Helvetica-Bold" },
 
   // ── Form field helpers ────────────────────────────────────────
-  row: { flexDirection: "row", alignItems: "flex-end", marginBottom: 8 },
-  label: { fontSize: 8.5, fontFamily: "Helvetica-Bold", marginRight: 4, whiteSpace: "nowrap" },
+  row: { flexDirection: "row", alignItems: "flex-end", marginBottom: 9 },
+  label: {
+    fontSize: 8.5,
+    fontFamily: "Helvetica-Bold",
+    marginRight: 4,
+    whiteSpace: "nowrap",
+    flexShrink: 0,
+  },
   field: {
     flex: 1,
     borderBottomWidth: 1,
@@ -91,62 +100,54 @@ const s = StyleSheet.create({
   fieldSub: { fontSize: 6.5, color: "#555", textAlign: "center", marginTop: 1 },
   spacer: { width: 10 },
 
-  // ── Name row ─────────────────────────────────────────────────
+  // Name sub-labels row
   nameRow: { flexDirection: "row", alignItems: "flex-end", marginBottom: 2 },
-  nameLabels: { flexDirection: "row", marginBottom: 8 },
+  nameLabels: { flexDirection: "row", marginBottom: 9 },
   nameLabel: { flex: 1, fontSize: 6.5, color: "#555", textAlign: "center" },
 
-  // ── Amount row ───────────────────────────────────────────────
+  // Divider
   divider: { borderBottomWidth: 1, borderBottomColor: BLACK, marginVertical: 6 },
 
-  // ── Registration box ─────────────────────────────────────────
+  // 80G row
+  g80Row: { flexDirection: "row", alignItems: "center", marginBottom: 8 },
+  circle: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: BLACK,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 3,
+  },
+  circleText: { fontSize: 6.5, fontFamily: "Helvetica-Bold" },
+
+  // Registration box
   regBox: {
     borderWidth: 1,
     borderColor: BLACK,
-    backgroundColor: "#daeef8",
+    backgroundColor: LIGHT,
     flexDirection: "row",
     justifyContent: "space-around",
     paddingVertical: 5,
     paddingHorizontal: 8,
-    marginBottom: 6,
+    marginBottom: 8,
   },
   regItem: { fontSize: 7.5, fontFamily: "Helvetica-Bold", textAlign: "center" },
 
-  // ── Footer text ───────────────────────────────────────────────
-  footerRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end" },
+  // Footer
+  footerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+  },
   footerLeft: { flex: 1, paddingRight: 20 },
-  footerText: { fontSize: 7.5, marginBottom: 3 },
+  footerText: { fontSize: 7.5, marginBottom: 4 },
   footerBold: { fontFamily: "Helvetica-Bold" },
-  footerRight: { alignItems: "center", minWidth: 90 },
-  sealBox: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    borderWidth: 2,
-    borderColor: BLUE,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 4,
-  },
-  sealText: { fontSize: 5.5, color: BLUE, textAlign: "center" },
-  sigLabel: { fontSize: 7.5, fontFamily: "Helvetica-Bold", textAlign: "center" },
-
-  // 80G row
-  g80Row: { flexDirection: "row", alignItems: "center", marginBottom: 6 },
-  circle: {
-    width: 11,
-    height: 11,
-    borderRadius: 5.5,
-    borderWidth: 1,
-    borderColor: BLACK,
-    alignItems: "center",
-    justifyContent: "center",
-    marginHorizontal: 2,
-  },
-  circleText: { fontSize: 6, fontFamily: "Helvetica-Bold" },
+  footerRight: { alignItems: "center", minWidth: 110 },
+  sigLabel: { fontSize: 7.5, fontFamily: "Helvetica-Bold", textAlign: "center", marginTop: 2 },
 });
 
-// ── Underline field with centred value ───────────────────────
 function Field({ value, flex = 1, sub }: { value?: string; flex?: number; sub?: string }) {
   return (
     <View style={{ flex, marginHorizontal: 2 }}>
@@ -154,24 +155,6 @@ function Field({ value, flex = 1, sub }: { value?: string; flex?: number; sub?: 
         <Text>{value ?? ""}</Text>
       </View>
       {sub ? <Text style={s.fieldSub}>{sub}</Text> : null}
-    </View>
-  );
-}
-
-// ── Handshake placeholder (replaced by <Image> when PNG present) ──
-function HandshakePlaceholder() {
-  return (
-    <View style={{ width: 52, height: 52, borderWidth: 2, borderColor: WHITE, borderRadius: 26, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ fontSize: 20, color: WHITE }}>🤝</Text>
-    </View>
-  );
-}
-
-function SealPlaceholder() {
-  return (
-    <View style={s.sealBox}>
-      <Text style={s.sealText}>{"HUMANITY\nUPLIFTING\nMANKIND\nFOUNDATION"}</Text>
-      <Text style={[s.sealText, { marginTop: 2 }]}>NGO REG.</Text>
     </View>
   );
 }
@@ -186,14 +169,13 @@ interface Props {
 
 export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) {
   const d = new Date(donor.date);
-  const monthYear = d.toLocaleDateString("en-IN", { month: "long", year: "numeric" }).replace(" ", "-");
+  const monthYear = d
+    .toLocaleDateString("en-IN", { month: "long", year: "numeric" })
+    .replace(" ", "-");
 
-  const paymentDetails =
-    donor.chequeNo
-      ? `${donor.chequeNo}${donor.bankName ? " / " + donor.bankName : ""}`
-      : donor.bankName ?? "";
-
-  const city = donor.city || "";
+  const paymentDetails = donor.chequeNo
+    ? `${donor.chequeNo}${donor.bankName ? " / " + donor.bankName : ""}`
+    : donor.bankName ?? "";
 
   return (
     <Document>
@@ -201,32 +183,26 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
 
         {/* ── HEADER ── */}
         <View style={s.header}>
-          {/* Logo */}
-          <View style={s.logoBox}>
+          {/* Logo on white card */}
+          <View style={s.logoWrap}>
             {useRealAssets ? (
-              <Image src={`${ORIGIN}/assets/logo.png`} style={{ width: 80, height: 55 }} />
+              <Image
+                src={`${ORIGIN}/assets/HUManity logo.png`}
+                style={{ width: 110, height: 42 }}
+              />
             ) : (
-              <View style={s.logoInner}>
-                <Text style={s.logoH}>HUManity</Text>
-                <Text style={s.logoTagline}>Humanity Uplifting Mankind</Text>
+              <View style={{ width: 110, height: 42, alignItems: "center", justifyContent: "center" }}>
+                <Text style={{ fontSize: 16, fontFamily: "Helvetica-Bold", color: BLUE }}>HUManity</Text>
+                <Text style={{ fontSize: 7, color: "#555" }}>Humanity Uplifting Mankind</Text>
               </View>
             )}
           </View>
 
-          {/* Centre text */}
+          {/* Centre */}
           <View style={s.headerCenter}>
             <Text style={s.orgName}>{foundation.name}</Text>
             <Text style={s.orgSub}>{foundation.subTagline}</Text>
             <Text style={s.orgAddr}>{foundation.address}</Text>
-          </View>
-
-          {/* Handshake */}
-          <View style={s.handshakeBox}>
-            {useRealAssets ? (
-              <Image src={`${ORIGIN}/assets/handshake.png`} style={{ width: 52, height: 52 }} />
-            ) : (
-              <HandshakePlaceholder />
-            )}
           </View>
         </View>
 
@@ -245,14 +221,13 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
             <Field value={donor.name} flex={3} />
             <View style={s.spacer} />
             <Text style={s.label}>Place:</Text>
-            <Field value={city} flex={1} />
+            <Field value={donor.city} flex={1} />
           </View>
           <View style={s.nameLabels}>
-            {/* indent past the "Donated by:" label (~65pt) */}
-            <View style={{ width: 65 }} />
+            <View style={{ width: 67 }} />
             <Text style={[s.nameLabel, { flex: 1 }]}>(First name)</Text>
             <Text style={[s.nameLabel, { flex: 2 }]}>(Last name)</Text>
-            <View style={{ width: 75 }} />
+            <View style={{ width: 72 }} />
           </View>
 
           {/* Email / Phone */}
@@ -273,7 +248,6 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
             <Field value={amountInWords(donor.amount)} flex={3} />
           </View>
 
-          {/* Divider */}
           <View style={s.divider} />
 
           {/* Mode / Details / PAN */}
@@ -309,7 +283,8 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
           <View style={s.footerRow}>
             <View style={s.footerLeft}>
               <Text style={s.footerText}>
-                We hereby confirm that the aforementioned donation has been received by HUManity organisation, {foundation.city}.
+                We hereby confirm that the aforementioned donation has been received by HUManity
+                organisation, {foundation.city}.
               </Text>
               <Text style={s.footerText}>
                 In case of queries, reach out to us at{" "}
@@ -318,15 +293,33 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
                 <Text style={s.footerBold}>{foundation.website}</Text>
               </Text>
             </View>
+
+            {/* Stamp + Signature */}
             <View style={s.footerRight}>
               {useRealAssets ? (
-                <Image src={`${ORIGIN}/assets/seal.png`} style={{ width: 64, height: 64, marginBottom: 4 }} />
+                <Image
+                  src={`${ORIGIN}/assets/humanity_donation_stamp.png`}
+                  style={{ width: 82, height: 82 }}
+                />
               ) : (
-                <SealPlaceholder />
+                <View style={{
+                  width: 82, height: 82, borderRadius: 41,
+                  borderWidth: 2, borderColor: BLUE,
+                  alignItems: "center", justifyContent: "center",
+                }}>
+                  <Text style={{ fontSize: 5.5, color: BLUE, textAlign: "center" }}>
+                    {"HUMANITY\nUPLIFTING\nMANKIND\nFOUNDATION\nNGO REG."}
+                  </Text>
+                </View>
               )}
               {useRealAssets ? (
-                <Image src={`${ORIGIN}/assets/signature.png`} style={{ width: 70, height: 28, marginBottom: 2 }} />
-              ) : null}
+                <Image
+                  src={`${ORIGIN}/assets/Abhishek Sign - Edited.png`}
+                  style={{ width: 82, height: 34, marginTop: 4 }}
+                />
+              ) : (
+                <View style={{ width: 82, height: 34, marginTop: 4 }} />
+              )}
               <Text style={s.sigLabel}>Authorised Signature</Text>
             </View>
           </View>
