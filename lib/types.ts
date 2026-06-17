@@ -33,7 +33,7 @@ export const DEFAULT_FOUNDATION: FoundationInfo = {
   name: "Humanity Uplifting Mankind Foundation",
   tagline: "Humanity Uplifting Mankind",
   subTagline: "Registered under section 8 companies act",
-  address: "LIG 155/5, 1st floor, Sector 5, MVP Colony, Visakhapatnam",
+  address: "GF1, Kranthi Nivas 2, PM Palem Last Bus Stop, Visakhapatnam, 530041",
   city: "Visakhapatnam",
   cin: "U85190AP2021NPL120322",
   pan: "AAGCH0887D",

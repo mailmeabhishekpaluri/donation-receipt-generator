@@ -80,7 +80,7 @@ const s = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 26,
-    paddingVertical: 18,
+    paddingVertical: 12,
     gap: 20,
   },
   amtBlock: { flex: 1 },
@@ -93,7 +93,7 @@ const s = StyleSheet.create({
     marginBottom: 3,
   },
   amtFigure: {
-    fontSize: 30,
+    fontSize: 26,
     fontFamily: "Helvetica-Bold",
     color: BLUE_DK,
     letterSpacing: -0.5,
@@ -125,7 +125,7 @@ const s = StyleSheet.create({
   taxSub: { fontSize: 7.5, color: MUTED, marginTop: 2 },
 
   // ── Body ─────────────────────────────────────────────────────
-  body: { paddingHorizontal: 26, paddingVertical: 20 },
+  body: { paddingHorizontal: 26, paddingTop: 14, paddingBottom: 8 },
 
   sectionLabel: {
     fontSize: 8,
@@ -133,14 +133,14 @@ const s = StyleSheet.create({
     color: BLUE,
     letterSpacing: 1.2,
     textTransform: "uppercase",
-    paddingBottom: 5,
+    paddingBottom: 4,
     borderBottomWidth: 1.5,
     borderBottomColor: RULE,
-    marginBottom: 12,
+    marginBottom: 9,
   },
 
   // Field helpers
-  fieldRow: { flexDirection: "row", marginBottom: 14 },
+  fieldRow: { flexDirection: "row", marginBottom: 10 },
   field: { flex: 1 },
   fieldGap: { width: 24 },
   fieldLabel: {
@@ -152,21 +152,21 @@ const s = StyleSheet.create({
     marginBottom: 3,
   },
   fieldValue: {
-    fontSize: 11,
+    fontSize: 10.5,
     fontFamily: "Helvetica-Bold",
     color: INK,
-    paddingBottom: 6,
+    paddingBottom: 4,
     borderBottomWidth: 1.5,
     borderBottomColor: RULE,
-    minHeight: 22,
+    minHeight: 18,
   },
   fieldValueMuted: {
-    fontSize: 11,
+    fontSize: 10.5,
     color: MUTED,
-    paddingBottom: 6,
+    paddingBottom: 4,
     borderBottomWidth: 1.5,
     borderBottomColor: RULE,
-    minHeight: 22,
+    minHeight: 18,
   },
 
   // 80G exemption block
@@ -177,8 +177,8 @@ const s = StyleSheet.create({
     borderRadius: 6,
     flexDirection: "row",
     paddingHorizontal: 16,
-    paddingVertical: 10,
-    marginBottom: 16,
+    paddingVertical: 8,
+    marginBottom: 10,
     gap: 12,
   },
   exItem: { flex: 1 },
@@ -194,16 +194,16 @@ const s = StyleSheet.create({
 
   // Declaration
   declaration: {
-    fontSize: 8.5,
+    fontSize: 8,
     color: MUTED,
-    lineHeight: 1.7,
+    lineHeight: 1.6,
     backgroundColor: "#fafafa",
     borderLeftWidth: 3,
     borderLeftColor: GOLD,
     paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingVertical: 6,
     borderRadius: 0,
-    marginBottom: 16,
+    marginBottom: 10,
   },
 
   // Footer signature row
@@ -211,7 +211,7 @@ const s = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
-    paddingTop: 12,
+    paddingTop: 8,
     borderTopWidth: 1.5,
     borderTopColor: RULE,
   },
@@ -359,7 +359,7 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
           </View>
 
           {/* Phone | PAN */}
-          <View style={[s.fieldRow, { marginBottom: 20 }]}>
+          <View style={[s.fieldRow, { marginBottom: 14 }]}>
             <Field label="Phone" value={donor.phone} blank={!donor.phone} />
             <View style={s.fieldGap} />
             <Field label="PAN Card No." value={donor.pan} blank={!donor.pan} />
@@ -369,7 +369,7 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
           <Text style={s.sectionLabel}>Payment Details</Text>
 
           {/* Mode | Bank | Ref */}
-          <View style={[s.fieldRow, { marginBottom: 20 }]}>
+          <View style={[s.fieldRow, { marginBottom: 14 }]}>
             <Field label="Mode of Payment" value={donor.mode ?? "Cash"} />
             <View style={s.fieldGap} />
             <Field label="Bank / Details" value={paymentDetails} blank={!paymentDetails} />
@@ -415,11 +415,11 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
               {useRealAssets ? (
                 <Image
                   src={`${ORIGIN}/assets/humanity_donation_stamp.png`}
-                  style={{ width: 90, height: 90 }}
+                  style={{ width: 80, height: 80 }}
                 />
               ) : (
                 <View style={{
-                  width: 90, height: 90, borderRadius: 45,
+                  width: 80, height: 80, borderRadius: 40,
                   borderWidth: 2, borderColor: BLUE,
                   backgroundColor: BLUE_LT,
                   alignItems: "center", justifyContent: "center",
@@ -432,7 +432,7 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
               {useRealAssets && (
                 <Image
                   src={`${ORIGIN}/assets/Abhishek Sign - Edited.png`}
-                  style={{ width: 100, height: 42, marginTop: 6 }}
+                  style={{ width: 90, height: 36, marginTop: 4 }}
                 />
               )}
               <Text style={s.sigName}>Authorised Signature</Text>
