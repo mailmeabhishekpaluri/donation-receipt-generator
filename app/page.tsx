@@ -23,7 +23,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    fetch("/assets/HUManity logo.png", { method: "HEAD" })
+    fetch("/assets/Logos-2.png", { method: "HEAD" })
       .then((r) => { if (r.ok) setUseRealAssets(true); })
       .catch(() => {});
   }, []);

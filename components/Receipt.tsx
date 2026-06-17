@@ -10,10 +10,11 @@ const BLUE  = "#3191c2";
 const WHITE = "#ffffff";
 const BLACK = "#000000";
 const LIGHT = "#daeef8";
+const GRAY  = "#555555";
 
 const s = StyleSheet.create({
   page: {
-    fontSize: 9.5,
+    fontSize: 10,
     color: BLACK,
     backgroundColor: WHITE,
     fontFamily: "Helvetica",
@@ -24,17 +25,15 @@ const s = StyleSheet.create({
     backgroundColor: BLUE,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 14,
-    minHeight: 96,
+    paddingHorizontal: 22,
+    paddingVertical: 16,
+    minHeight: 100,
   },
-  // Logo on white card — generous white space around the image
   logoCard: {
     backgroundColor: WHITE,
     borderRadius: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    marginRight: 16,
+    padding: 10,           // generous white space on all sides
+    marginRight: 18,
     flexShrink: 0,
     alignItems: "center",
     justifyContent: "center",
@@ -45,7 +44,7 @@ const s = StyleSheet.create({
     justifyContent: "center",
   },
   orgName: {
-    fontSize: 16,
+    fontSize: 15,
     fontFamily: "Helvetica-Bold",
     color: WHITE,
     textAlign: "center",
@@ -66,57 +65,93 @@ const s = StyleSheet.create({
 
   // ── Body ─────────────────────────────────────────────────────
   body: {
-    paddingHorizontal: 24,
-    paddingTop: 14,
-    paddingBottom: 8,
+    paddingHorizontal: 28,
+    paddingTop: 16,
+    paddingBottom: 10,
     flex: 1,
   },
 
-  // Receipt No / Date row
+  // Receipt No / Date
   receiptDateRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 12,
+    marginBottom: 16,
   },
-  receiptNo: { fontSize: 9.5, fontFamily: "Helvetica-Bold" },
+  receiptNo: { fontSize: 10, fontFamily: "Helvetica-Bold" },
 
-  // ── Form field helpers ────────────────────────────────────────
-  row: { flexDirection: "row", alignItems: "flex-end", marginBottom: 10 },
-  label: {
-    fontSize: 8.5,
+  // ── Vertical field block ──────────────────────────────────────
+  // label above, underline below
+  fieldBlock: { marginBottom: 12 },
+  fieldLabel: {
+    fontSize: 8,
+    color: GRAY,
     fontFamily: "Helvetica-Bold",
-    marginRight: 4,
-    whiteSpace: "nowrap",
-    flexShrink: 0,
+    marginBottom: 3,
+    textTransform: "uppercase",
   },
-  field: {
-    flex: 1,
+  fieldLine: {
     borderBottomWidth: 1,
     borderBottomColor: BLACK,
-    paddingBottom: 2,
-    fontSize: 9.5,
+    paddingBottom: 3,
+    fontSize: 10,
     fontFamily: "Helvetica-Bold",
-    textAlign: "center",
-    minHeight: 15,
+    minHeight: 16,
   },
-  fieldSub: { fontSize: 6.5, color: "#555", textAlign: "center", marginTop: 1 },
-  spacer: { width: 10 },
+  fieldHint: {
+    flexDirection: "row",
+    marginTop: 2,
+  },
+  fieldHintText: {
+    flex: 1,
+    fontSize: 6.5,
+    color: GRAY,
+    textAlign: "center",
+  },
 
-  // Name sub-labels
-  nameRow: { flexDirection: "row", alignItems: "flex-end", marginBottom: 2 },
-  nameLabels: { flexDirection: "row", marginBottom: 10 },
-  nameLabel: { flex: 1, fontSize: 6.5, color: "#555", textAlign: "center" },
+  // Two-column row (for fields that naturally pair)
+  twoCol: {
+    flexDirection: "row",
+    gap: 16,
+    marginBottom: 12,
+  },
+  colHalf: { flex: 1 },
+
+  // Three-column row (mode / details / PAN)
+  threeCol: {
+    flexDirection: "row",
+    gap: 12,
+    marginBottom: 12,
+  },
+  colThird: { flex: 1 },
+
+  smallLabel: {
+    fontSize: 7.5,
+    color: GRAY,
+    fontFamily: "Helvetica-Bold",
+    marginBottom: 3,
+    textTransform: "uppercase",
+  },
+  smallLine: {
+    borderBottomWidth: 1,
+    borderBottomColor: BLACK,
+    paddingBottom: 3,
+    fontSize: 9,
+    fontFamily: "Helvetica-Bold",
+    minHeight: 15,
+    textAlign: "center",
+  },
 
   // Divider
-  divider: { borderBottomWidth: 1, borderBottomColor: BLACK, marginVertical: 8 },
+  divider: { borderBottomWidth: 1, borderBottomColor: "#cccccc", marginVertical: 10 },
 
   // 80G row
-  g80Row: { flexDirection: "row", alignItems: "center", marginBottom: 10 },
+  g80Row: { flexDirection: "row", alignItems: "center", marginBottom: 12 },
+  g80Label: { fontSize: 8.5, fontFamily: "Helvetica-Bold", marginRight: 4 },
   circle: {
-    width: 13,
-    height: 13,
-    borderRadius: 6.5,
-    borderWidth: 1,
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    borderWidth: 1.2,
     borderColor: BLACK,
     alignItems: "center",
     justifyContent: "center",
@@ -131,9 +166,9 @@ const s = StyleSheet.create({
     backgroundColor: LIGHT,
     flexDirection: "row",
     justifyContent: "space-around",
-    paddingVertical: 6,
+    paddingVertical: 7,
     paddingHorizontal: 8,
-    marginBottom: 10,
+    marginBottom: 14,
   },
   regItem: { fontSize: 7.5, fontFamily: "Helvetica-Bold", textAlign: "center" },
 
@@ -144,27 +179,16 @@ const s = StyleSheet.create({
     alignItems: "flex-end",
   },
   footerLeft: { flex: 1, paddingRight: 16 },
-  footerText: { fontSize: 7.5, marginBottom: 4 },
+  footerText: { fontSize: 8, color: BLACK, marginBottom: 4, lineHeight: 1.4 },
   footerBold: { fontFamily: "Helvetica-Bold" },
   footerRight: { alignItems: "center", minWidth: 120 },
   sigLabel: {
     fontSize: 8,
     fontFamily: "Helvetica-Bold",
     textAlign: "center",
-    marginTop: 3,
+    marginTop: 4,
   },
 });
-
-function Field({ value, flex = 1, sub }: { value?: string; flex?: number; sub?: string }) {
-  return (
-    <View style={{ flex, marginHorizontal: 2 }}>
-      <View style={[s.field, { flex: undefined }]}>
-        <Text>{value ?? ""}</Text>
-      </View>
-      {sub ? <Text style={s.fieldSub}>{sub}</Text> : null}
-    </View>
-  );
-}
 
 const ORIGIN = typeof window !== "undefined" ? window.location.origin : "";
 
@@ -191,22 +215,21 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
 
         {/* ── HEADER ── */}
         <View style={s.header}>
-          {/* Logo — white card with ample padding so the logo breathes */}
+          {/* New square logo with white card + generous padding */}
           <View style={s.logoCard}>
             {useRealAssets ? (
               <Image
-                src={`${ORIGIN}/assets/HUManity logo.png`}
-                style={{ width: 130, height: 50 }}
+                src={`${ORIGIN}/assets/Logos-2.png`}
+                style={{ width: 72, height: 72 }}
               />
             ) : (
-              <View style={{ width: 130, height: 50, alignItems: "center", justifyContent: "center" }}>
-                <Text style={{ fontSize: 18, fontFamily: "Helvetica-Bold", color: BLUE }}>HUManity</Text>
-                <Text style={{ fontSize: 7.5, color: "#555" }}>Humanity Uplifting Mankind</Text>
+              <View style={{ width: 72, height: 72, alignItems: "center", justifyContent: "center" }}>
+                <Text style={{ fontSize: 18, fontFamily: "Helvetica-Bold", color: BLUE }}>HUM</Text>
+                <Text style={{ fontSize: 7, color: "#555", textAlign: "center" }}>Humanity{"\n"}Uplifting Mankind</Text>
               </View>
             )}
           </View>
 
-          {/* Centre text */}
           <View style={s.headerCenter}>
             <Text style={s.orgName}>{foundation.name}</Text>
             <Text style={s.orgSub}>{foundation.subTagline}</Text>
@@ -223,58 +246,69 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
             <Text style={s.receiptNo}>Date: {monthYear}</Text>
           </View>
 
-          {/* Donated by + Place */}
-          <View style={s.nameRow}>
-            <Text style={s.label}>Donated by:</Text>
-            <Field value={donor.name} flex={3} />
-            <View style={s.spacer} />
-            <Text style={s.label}>Place:</Text>
-            <Field value={donor.city} flex={1} />
-          </View>
-          <View style={s.nameLabels}>
-            <View style={{ width: 69 }} />
-            <Text style={[s.nameLabel, { flex: 1 }]}>(First name)</Text>
-            <Text style={[s.nameLabel, { flex: 2 }]}>(Last name)</Text>
-            <View style={{ width: 70 }} />
+          {/* Donated by — full width */}
+          <View style={s.fieldBlock}>
+            <Text style={s.fieldLabel}>Donated by</Text>
+            <Text style={s.fieldLine}>{donor.name}</Text>
+            <View style={s.fieldHint}>
+              <Text style={s.fieldHintText}>(First name)</Text>
+              <Text style={[s.fieldHintText, { flex: 2 }]}>(Last name)</Text>
+            </View>
           </View>
 
-          {/* Email / Phone */}
-          <View style={s.row}>
-            <Text style={s.label}>Email id:</Text>
-            <Field value={donor.email} flex={3} />
-            <View style={s.spacer} />
-            <Text style={s.label}>Phone:</Text>
-            <Field value={donor.phone} flex={1} />
+          {/* Place + Email side by side */}
+          <View style={s.twoCol}>
+            <View style={s.colHalf}>
+              <Text style={s.fieldLabel}>Place</Text>
+              <Text style={s.fieldLine}>{donor.city ?? ""}</Text>
+            </View>
+            <View style={s.colHalf}>
+              <Text style={s.fieldLabel}>Phone</Text>
+              <Text style={s.fieldLine}>{donor.phone ?? ""}</Text>
+            </View>
           </View>
 
-          {/* Amount */}
-          <View style={s.row}>
-            <Text style={s.label}>Amount Received:</Text>
-            <Field value={`Rs ${formatIndianCurrency(donor.amount)}/-`} flex={2} />
-            <View style={s.spacer} />
-            <Text style={s.label}>In words:</Text>
-            <Field value={amountInWords(donor.amount)} flex={3} />
+          {/* Email — full width */}
+          <View style={s.fieldBlock}>
+            <Text style={s.fieldLabel}>Email id</Text>
+            <Text style={s.fieldLine}>{donor.email ?? ""}</Text>
+          </View>
+
+          {/* Amount — full width */}
+          <View style={s.fieldBlock}>
+            <Text style={s.fieldLabel}>Amount Received</Text>
+            <Text style={s.fieldLine}>Rs {formatIndianCurrency(donor.amount)}/-</Text>
+          </View>
+
+          {/* In words — full width */}
+          <View style={s.fieldBlock}>
+            <Text style={s.fieldLabel}>In Words</Text>
+            <Text style={s.fieldLine}>{amountInWords(donor.amount)}</Text>
           </View>
 
           <View style={s.divider} />
 
-          {/* Mode / Details / PAN */}
-          <View style={s.row}>
-            <Text style={s.label}>Mode of Payment:</Text>
-            <Field value={donor.mode ?? "Cash"} flex={1} />
-            <View style={s.spacer} />
-            <Text style={s.label}>Details:</Text>
-            <Field value={paymentDetails} flex={1} />
-            <View style={s.spacer} />
-            <Text style={s.label}>PAN card No:</Text>
-            <Field value={donor.pan} flex={1} />
+          {/* Mode / Details / PAN — three columns */}
+          <View style={s.threeCol}>
+            <View style={s.colThird}>
+              <Text style={s.smallLabel}>Mode of Payment</Text>
+              <Text style={s.smallLine}>{donor.mode ?? "Cash"}</Text>
+            </View>
+            <View style={s.colThird}>
+              <Text style={s.smallLabel}>Details</Text>
+              <Text style={s.smallLine}>{paymentDetails}</Text>
+            </View>
+            <View style={s.colThird}>
+              <Text style={s.smallLabel}>PAN Card No</Text>
+              <Text style={s.smallLine}>{donor.pan ?? ""}</Text>
+            </View>
           </View>
 
           {/* 80G */}
           <View style={s.g80Row}>
-            <Text style={s.label}>80 G tax exemption:</Text>
+            <Text style={s.g80Label}>80 G tax exemption:</Text>
             <View style={s.circle}><Text style={s.circleText}>Yes</Text></View>
-            <Text style={{ fontSize: 8.5 }}> / No</Text>
+            <Text style={{ fontSize: 9 }}> / No</Text>
             <Text style={{ fontSize: 8, marginLeft: 10 }}>
               If Yes, we declare that the donation to the organisation is exempt u/s 80G.
             </Text>
@@ -297,21 +331,21 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
               <Text style={s.footerText}>
                 In case of queries, reach out to us at{" "}
                 <Text style={s.footerBold}>{foundation.email}</Text>
-                {" "}or visit{" "}
+                {"\n"}or visit{" "}
                 <Text style={s.footerBold}>{foundation.website}</Text>
               </Text>
             </View>
 
-            {/* Stamp (large) + Signature (large) */}
+            {/* Stamp (large) + Signature (large) stacked */}
             <View style={s.footerRight}>
               {useRealAssets ? (
                 <Image
                   src={`${ORIGIN}/assets/humanity_donation_stamp.png`}
-                  style={{ width: 110, height: 110 }}
+                  style={{ width: 115, height: 115 }}
                 />
               ) : (
                 <View style={{
-                  width: 110, height: 110, borderRadius: 55,
+                  width: 115, height: 115, borderRadius: 57.5,
                   borderWidth: 2, borderColor: BLUE,
                   alignItems: "center", justifyContent: "center",
                 }}>
@@ -323,10 +357,10 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
               {useRealAssets ? (
                 <Image
                   src={`${ORIGIN}/assets/Abhishek Sign - Edited.png`}
-                  style={{ width: 110, height: 46, marginTop: 6 }}
+                  style={{ width: 115, height: 48, marginTop: 6 }}
                 />
               ) : (
-                <View style={{ width: 110, height: 46, marginTop: 6 }} />
+                <View style={{ width: 115, height: 48, marginTop: 6 }} />
               )}
               <Text style={s.sigLabel}>Authorised Signature</Text>
             </View>
