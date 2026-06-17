@@ -6,189 +6,268 @@ import { Document, Page, View, Text, Image, StyleSheet } from "@react-pdf/render
 import { Donor, FoundationInfo } from "@/lib/types";
 import { amountInWords, formatIndianCurrency } from "@/lib/indic";
 
-const BLUE  = "#3191c2";
-const WHITE = "#ffffff";
-const BLACK = "#000000";
-const LIGHT = "#daeef8";
-const GRAY  = "#555555";
+// ── Colour tokens (mirror the HTML :root vars) ────────────────
+const BLUE    = "#3191C2";
+const BLUE_DK = "#1e6a9a";
+const BLUE_LT = "#e8f4fb";
+const GOLD    = "#F5C518";
+const INK     = "#1a1a2e";
+const MUTED   = "#64748b";
+const RULE    = "#d1e8f5";
+const WHITE   = "#ffffff";
 
 const s = StyleSheet.create({
-  page: {
-    fontSize: 10,
-    color: BLACK,
-    backgroundColor: WHITE,
-    fontFamily: "Helvetica",
-  },
+  page: { fontSize: 9, fontFamily: "Helvetica", backgroundColor: WHITE },
 
   // ── Header ───────────────────────────────────────────────────
-  header: {
-    backgroundColor: BLUE,
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 22,
-    paddingVertical: 16,
-    minHeight: 100,
-  },
-  logoCard: {
+  header: { flexDirection: "row", minHeight: 88 },
+  logoCell: {
+    width: 104,
     backgroundColor: WHITE,
-    borderRadius: 6,
-    padding: 10,           // generous white space on all sides
-    marginRight: 18,
-    flexShrink: 0,
+    borderRightWidth: 4,
+    borderRightColor: GOLD,
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 12,
+    paddingVertical: 14,
   },
-  headerCenter: {
+  headerText: {
     flex: 1,
-    alignItems: "center",
+    backgroundColor: BLUE,
+    paddingHorizontal: 22,
+    paddingVertical: 14,
     justifyContent: "center",
   },
   orgName: {
-    fontSize: 15,
+    fontSize: 17,
     fontFamily: "Helvetica-Bold",
     color: WHITE,
-    textAlign: "center",
-    marginBottom: 4,
+    marginBottom: 3,
   },
-  orgSub: {
+  tagline: {
     fontSize: 8,
-    color: WHITE,
-    textAlign: "center",
-    fontFamily: "Helvetica-Bold",
+    color: "rgba(255,255,255,0.75)",
+    letterSpacing: 0.5,
+    textTransform: "uppercase",
+    marginBottom: 6,
   },
-  orgAddr: {
-    fontSize: 7.5,
-    color: WHITE,
-    textAlign: "center",
-    marginTop: 3,
-  },
+  address: { fontSize: 8, color: "rgba(255,255,255,0.85)" },
 
-  // ── Body ─────────────────────────────────────────────────────
-  body: {
-    paddingHorizontal: 28,
-    paddingTop: 16,
-    paddingBottom: 10,
-    flex: 1,
-  },
-
-  // Receipt No / Date
-  receiptDateRow: {
+  // ── Receipt badge (gold bar) ─────────────────────────────────
+  badge: {
+    backgroundColor: GOLD,
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 16,
+    alignItems: "center",
+    paddingHorizontal: 22,
+    paddingVertical: 7,
   },
-  receiptNo: { fontSize: 10, fontFamily: "Helvetica-Bold" },
-
-  // ── Vertical field block ──────────────────────────────────────
-  // label above, underline below
-  fieldBlock: { marginBottom: 12 },
-  fieldLabel: {
-    fontSize: 8,
-    color: GRAY,
-    fontFamily: "Helvetica-Bold",
-    marginBottom: 3,
-    textTransform: "uppercase",
-  },
-  fieldLine: {
-    borderBottomWidth: 1,
-    borderBottomColor: BLACK,
-    paddingBottom: 3,
+  badgeLabel: {
     fontSize: 10,
     fontFamily: "Helvetica-Bold",
-    minHeight: 16,
-  },
-  fieldHint: {
-    flexDirection: "row",
-    marginTop: 2,
-  },
-  fieldHintText: {
-    flex: 1,
-    fontSize: 6.5,
-    color: GRAY,
-    textAlign: "center",
-  },
-
-  // Two-column row (for fields that naturally pair)
-  twoCol: {
-    flexDirection: "row",
-    gap: 16,
-    marginBottom: 12,
-  },
-  colHalf: { flex: 1 },
-
-  // Three-column row (mode / details / PAN)
-  threeCol: {
-    flexDirection: "row",
-    gap: 12,
-    marginBottom: 12,
-  },
-  colThird: { flex: 1 },
-
-  smallLabel: {
-    fontSize: 7.5,
-    color: GRAY,
-    fontFamily: "Helvetica-Bold",
-    marginBottom: 3,
+    color: INK,
+    letterSpacing: 1.5,
     textTransform: "uppercase",
   },
-  smallLine: {
-    borderBottomWidth: 1,
-    borderBottomColor: BLACK,
-    paddingBottom: 3,
-    fontSize: 9,
-    fontFamily: "Helvetica-Bold",
-    minHeight: 15,
-    textAlign: "center",
-  },
+  badgeMeta: { flexDirection: "row", gap: 20 },
+  badgeMetaText: { fontSize: 9.5, fontFamily: "Helvetica-Bold", color: INK },
 
-  // Divider
-  divider: { borderBottomWidth: 1, borderBottomColor: "#cccccc", marginVertical: 10 },
-
-  // 80G row
-  g80Row: { flexDirection: "row", alignItems: "center", marginBottom: 12 },
-  g80Label: { fontSize: 8.5, fontFamily: "Helvetica-Bold", marginRight: 4 },
-  circle: {
-    width: 14,
-    height: 14,
-    borderRadius: 7,
-    borderWidth: 1.2,
-    borderColor: BLACK,
-    alignItems: "center",
-    justifyContent: "center",
-    marginHorizontal: 3,
-  },
-  circleText: { fontSize: 7, fontFamily: "Helvetica-Bold" },
-
-  // Registration box
-  regBox: {
-    borderWidth: 1,
-    borderColor: BLACK,
-    backgroundColor: LIGHT,
+  // ── Amount hero ──────────────────────────────────────────────
+  amountHero: {
+    backgroundColor: BLUE_LT,
+    borderBottomWidth: 2,
+    borderBottomColor: RULE,
     flexDirection: "row",
-    justifyContent: "space-around",
-    paddingVertical: 7,
-    paddingHorizontal: 8,
-    marginBottom: 14,
+    alignItems: "center",
+    paddingHorizontal: 26,
+    paddingVertical: 18,
+    gap: 20,
   },
-  regItem: { fontSize: 7.5, fontFamily: "Helvetica-Bold", textAlign: "center" },
+  amtBlock: { flex: 1 },
+  amtLabel: {
+    fontSize: 8,
+    fontFamily: "Helvetica-Bold",
+    color: MUTED,
+    letterSpacing: 1,
+    textTransform: "uppercase",
+    marginBottom: 3,
+  },
+  amtFigure: {
+    fontSize: 30,
+    fontFamily: "Helvetica-Bold",
+    color: BLUE_DK,
+    letterSpacing: -0.5,
+    lineHeight: 1,
+  },
+  amtWords: { fontSize: 9, color: MUTED, marginTop: 5 },
+  taxBadge: {
+    borderWidth: 2,
+    borderColor: BLUE,
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    alignItems: "center",
+    backgroundColor: WHITE,
+  },
+  taxLabel: {
+    fontSize: 7.5,
+    fontFamily: "Helvetica-Bold",
+    color: BLUE,
+    letterSpacing: 1,
+    textTransform: "uppercase",
+  },
+  taxVal: {
+    fontSize: 20,
+    fontFamily: "Helvetica-Bold",
+    color: BLUE_DK,
+    marginTop: 2,
+  },
+  taxSub: { fontSize: 7.5, color: MUTED, marginTop: 2 },
 
-  // Footer
-  footerRow: {
+  // ── Body ─────────────────────────────────────────────────────
+  body: { paddingHorizontal: 26, paddingVertical: 20 },
+
+  sectionLabel: {
+    fontSize: 8,
+    fontFamily: "Helvetica-Bold",
+    color: BLUE,
+    letterSpacing: 1.2,
+    textTransform: "uppercase",
+    paddingBottom: 5,
+    borderBottomWidth: 1.5,
+    borderBottomColor: RULE,
+    marginBottom: 12,
+  },
+
+  // Field helpers
+  fieldRow: { flexDirection: "row", marginBottom: 14 },
+  field: { flex: 1 },
+  fieldGap: { width: 24 },
+  fieldLabel: {
+    fontSize: 7.5,
+    fontFamily: "Helvetica-Bold",
+    color: MUTED,
+    letterSpacing: 0.6,
+    textTransform: "uppercase",
+    marginBottom: 3,
+  },
+  fieldValue: {
+    fontSize: 11,
+    fontFamily: "Helvetica-Bold",
+    color: INK,
+    paddingBottom: 6,
+    borderBottomWidth: 1.5,
+    borderBottomColor: RULE,
+    minHeight: 22,
+  },
+  fieldValueMuted: {
+    fontSize: 11,
+    color: MUTED,
+    paddingBottom: 6,
+    borderBottomWidth: 1.5,
+    borderBottomColor: RULE,
+    minHeight: 22,
+  },
+
+  // 80G exemption block
+  exemptionBlock: {
+    backgroundColor: BLUE_LT,
+    borderWidth: 1.5,
+    borderColor: RULE,
+    borderRadius: 6,
+    flexDirection: "row",
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    marginBottom: 16,
+    gap: 12,
+  },
+  exItem: { flex: 1 },
+  exLabel: {
+    fontSize: 7.5,
+    fontFamily: "Helvetica-Bold",
+    color: MUTED,
+    letterSpacing: 0.8,
+    textTransform: "uppercase",
+    marginBottom: 3,
+  },
+  exVal: { fontSize: 10, fontFamily: "Helvetica-Bold", color: BLUE_DK },
+
+  // Declaration
+  declaration: {
+    fontSize: 8.5,
+    color: MUTED,
+    lineHeight: 1.7,
+    backgroundColor: "#fafafa",
+    borderLeftWidth: 3,
+    borderLeftColor: GOLD,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 0,
+    marginBottom: 16,
+  },
+
+  // Footer signature row
+  footerSig: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
+    paddingTop: 12,
+    borderTopWidth: 1.5,
+    borderTopColor: RULE,
   },
-  footerLeft: { flex: 1, paddingRight: 16 },
-  footerText: { fontSize: 8, color: BLACK, marginBottom: 4, lineHeight: 1.4 },
-  footerBold: { fontFamily: "Helvetica-Bold" },
-  footerRight: { alignItems: "center", minWidth: 120 },
-  sigLabel: {
-    fontSize: 8,
+  sigLeft: { flex: 1, paddingRight: 20 },
+  sigLeftText: { fontSize: 8.5, color: MUTED, lineHeight: 1.7 },
+  sigLeftBold: { fontFamily: "Helvetica-Bold", color: BLUE },
+  sigRight: { alignItems: "center" },
+  sigName: {
+    fontSize: 9,
     fontFamily: "Helvetica-Bold",
+    color: INK,
     textAlign: "center",
-    marginTop: 4,
+    marginTop: 5,
+  },
+  sigDesignation: { fontSize: 8.5, color: MUTED, textAlign: "center" },
+
+  // Bottom bar
+  bottomBar: {
+    backgroundColor: BLUE,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 22,
+    paddingVertical: 8,
+  },
+  bottomContact: { fontSize: 8.5, color: "rgba(255,255,255,0.9)" },
+  bottomContactBold: { color: WHITE, fontFamily: "Helvetica-Bold" },
+  bottomThankyou: {
+    fontSize: 8.5,
+    fontFamily: "Helvetica-Bold",
+    color: GOLD,
+    letterSpacing: 0.5,
   },
 });
+
+// ── Helper: one labelled field ────────────────────────────────
+function Field({
+  label,
+  value,
+  blank = false,
+}: {
+  label: string;
+  value?: string;
+  blank?: boolean;
+}) {
+  return (
+    <View style={s.field}>
+      <Text style={s.fieldLabel}>{label}</Text>
+      {blank || !value ? (
+        <Text style={s.fieldValueMuted}>—</Text>
+      ) : (
+        <Text style={s.fieldValue}>{value}</Text>
+      )}
+    </View>
+  );
+}
 
 const ORIGIN = typeof window !== "undefined" ? window.location.origin : "";
 
@@ -200,9 +279,7 @@ interface Props {
 
 export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) {
   const d = new Date(donor.date);
-  const monthYear = d
-    .toLocaleDateString("en-IN", { month: "long", year: "numeric" })
-    .replace(" ", "-");
+  const monthYear = d.toLocaleDateString("en-IN", { month: "long", year: "numeric" }).replace(" ", " ");
 
   const paymentDetails = donor.chequeNo
     ? `${donor.chequeNo}${donor.bankName ? " / " + donor.bankName : ""}`
@@ -210,163 +287,171 @@ export function ReceiptDoc({ donor, foundation, useRealAssets = false }: Props) 
 
   return (
     <Document>
-      {/* Portrait A4 */}
       <Page size="A4" style={s.page}>
 
         {/* ── HEADER ── */}
         <View style={s.header}>
-          {/* New square logo with white card + generous padding */}
-          <View style={s.logoCard}>
+          {/* Logo cell */}
+          <View style={s.logoCell}>
             {useRealAssets ? (
-              <Image
-                src={`${ORIGIN}/assets/Logos-2.png`}
-                style={{ width: 72, height: 72 }}
-              />
+              <Image src={`${ORIGIN}/assets/Logos-2.png`} style={{ width: 72, height: 72 }} />
             ) : (
-              <View style={{ width: 72, height: 72, alignItems: "center", justifyContent: "center" }}>
-                <Text style={{ fontSize: 18, fontFamily: "Helvetica-Bold", color: BLUE }}>HUM</Text>
-                <Text style={{ fontSize: 7, color: "#555", textAlign: "center" }}>Humanity{"\n"}Uplifting Mankind</Text>
+              <View style={{
+                width: 72, height: 72, backgroundColor: BLUE_LT, borderRadius: 6,
+                alignItems: "center", justifyContent: "center",
+              }}>
+                <Text style={{ fontSize: 13, fontFamily: "Helvetica-Bold", color: BLUE, textAlign: "center" }}>
+                  {"HUM\nanity"}
+                </Text>
               </View>
             )}
           </View>
 
-          <View style={s.headerCenter}>
+          {/* Text cell */}
+          <View style={s.headerText}>
             <Text style={s.orgName}>{foundation.name}</Text>
-            <Text style={s.orgSub}>{foundation.subTagline}</Text>
-            <Text style={s.orgAddr}>{foundation.address}</Text>
+            <Text style={s.tagline}>For Children · For Change · For Humanity</Text>
+            <Text style={s.address}>
+              Registered under Section 8 Companies Act  |  {foundation.address}
+            </Text>
+          </View>
+        </View>
+
+        {/* ── RECEIPT BADGE ── */}
+        <View style={s.badge}>
+          <Text style={s.badgeLabel}>Donation Receipt</Text>
+          <View style={s.badgeMeta}>
+            <Text style={s.badgeMetaText}>Receipt No: {donor.receiptNumber}</Text>
+            <Text style={s.badgeMetaText}>Date: {monthYear}</Text>
+          </View>
+        </View>
+
+        {/* ── AMOUNT HERO ── */}
+        <View style={s.amountHero}>
+          <View style={s.amtBlock}>
+            <Text style={s.amtLabel}>Amount Received</Text>
+            <Text style={s.amtFigure}>Rs {formatIndianCurrency(donor.amount)}/-</Text>
+            <Text style={s.amtWords}>{amountInWords(donor.amount)}</Text>
+          </View>
+          <View style={s.taxBadge}>
+            <Text style={s.taxLabel}>Tax Exemption</Text>
+            <Text style={s.taxVal}>80G</Text>
+            <Text style={s.taxSub}>Eligible & Declared</Text>
           </View>
         </View>
 
         {/* ── BODY ── */}
         <View style={s.body}>
 
-          {/* Receipt No / Date */}
-          <View style={s.receiptDateRow}>
-            <Text style={s.receiptNo}>Receipt No: {donor.receiptNumber}</Text>
-            <Text style={s.receiptNo}>Date: {monthYear}</Text>
-          </View>
+          {/* Donor Details */}
+          <Text style={s.sectionLabel}>Donor Details</Text>
 
           {/* Donated by — full width */}
-          <View style={s.fieldBlock}>
-            <Text style={s.fieldLabel}>Donated by</Text>
-            <Text style={s.fieldLine}>{donor.name}</Text>
-            <View style={s.fieldHint}>
-              <Text style={s.fieldHintText}>(First name)</Text>
-              <Text style={[s.fieldHintText, { flex: 2 }]}>(Last name)</Text>
+          <View style={s.fieldRow}>
+            <Field label="Donated By (Organisation / Name)" value={donor.name} />
+          </View>
+
+          {/* Place | Email */}
+          <View style={s.fieldRow}>
+            <Field label="Place" value={donor.city} />
+            <View style={s.fieldGap} />
+            <Field label="Email ID" value={donor.email} blank={!donor.email} />
+          </View>
+
+          {/* Phone | PAN */}
+          <View style={[s.fieldRow, { marginBottom: 20 }]}>
+            <Field label="Phone" value={donor.phone} blank={!donor.phone} />
+            <View style={s.fieldGap} />
+            <Field label="PAN Card No." value={donor.pan} blank={!donor.pan} />
+          </View>
+
+          {/* Payment Details */}
+          <Text style={s.sectionLabel}>Payment Details</Text>
+
+          {/* Mode | Bank | Ref */}
+          <View style={[s.fieldRow, { marginBottom: 20 }]}>
+            <Field label="Mode of Payment" value={donor.mode ?? "Cash"} />
+            <View style={s.fieldGap} />
+            <Field label="Bank / Details" value={paymentDetails} blank={!paymentDetails} />
+            <View style={s.fieldGap} />
+            <Field label="Transaction Ref." value={undefined} blank />
+          </View>
+
+          {/* 80G Exemption block */}
+          <View style={s.exemptionBlock}>
+            <View style={s.exItem}>
+              <Text style={s.exLabel}>CIN</Text>
+              <Text style={s.exVal}>{foundation.cin}</Text>
+            </View>
+            <View style={s.exItem}>
+              <Text style={s.exLabel}>PAN Card Number</Text>
+              <Text style={s.exVal}>{foundation.pan}</Text>
+            </View>
+            <View style={s.exItem}>
+              <Text style={s.exLabel}>80G Number</Text>
+              <Text style={s.exVal}>{foundation.reg80G}</Text>
             </View>
           </View>
 
-          {/* Place + Email side by side */}
-          <View style={s.twoCol}>
-            <View style={s.colHalf}>
-              <Text style={s.fieldLabel}>Place</Text>
-              <Text style={s.fieldLine}>{donor.city ?? ""}</Text>
-            </View>
-            <View style={s.colHalf}>
-              <Text style={s.fieldLabel}>Phone</Text>
-              <Text style={s.fieldLine}>{donor.phone ?? ""}</Text>
-            </View>
-          </View>
+          {/* Declaration */}
+          <Text style={s.declaration}>
+            We hereby confirm that the aforementioned donation has been received by HUManity
+            Organisation, {foundation.city}. We declare that this donation is exempt from tax
+            under Section 80G of the Income Tax Act.
+          </Text>
 
-          {/* Email — full width */}
-          <View style={s.fieldBlock}>
-            <Text style={s.fieldLabel}>Email id</Text>
-            <Text style={s.fieldLine}>{donor.email ?? ""}</Text>
-          </View>
-
-          {/* Amount — full width */}
-          <View style={s.fieldBlock}>
-            <Text style={s.fieldLabel}>Amount Received</Text>
-            <Text style={s.fieldLine}>Rs {formatIndianCurrency(donor.amount)}/-</Text>
-          </View>
-
-          {/* In words — full width */}
-          <View style={s.fieldBlock}>
-            <Text style={s.fieldLabel}>In Words</Text>
-            <Text style={s.fieldLine}>{amountInWords(donor.amount)}</Text>
-          </View>
-
-          <View style={s.divider} />
-
-          {/* Mode / Details / PAN — three columns */}
-          <View style={s.threeCol}>
-            <View style={s.colThird}>
-              <Text style={s.smallLabel}>Mode of Payment</Text>
-              <Text style={s.smallLine}>{donor.mode ?? "Cash"}</Text>
-            </View>
-            <View style={s.colThird}>
-              <Text style={s.smallLabel}>Details</Text>
-              <Text style={s.smallLine}>{paymentDetails}</Text>
-            </View>
-            <View style={s.colThird}>
-              <Text style={s.smallLabel}>PAN Card No</Text>
-              <Text style={s.smallLine}>{donor.pan ?? ""}</Text>
-            </View>
-          </View>
-
-          {/* 80G */}
-          <View style={s.g80Row}>
-            <Text style={s.g80Label}>80 G tax exemption:</Text>
-            <View style={s.circle}><Text style={s.circleText}>Yes</Text></View>
-            <Text style={{ fontSize: 9 }}> / No</Text>
-            <Text style={{ fontSize: 8, marginLeft: 10 }}>
-              If Yes, we declare that the donation to the organisation is exempt u/s 80G.
-            </Text>
-          </View>
-
-          {/* Registration box */}
-          <View style={s.regBox}>
-            <Text style={s.regItem}>CIN: {foundation.cin}</Text>
-            <Text style={s.regItem}>PAN CARD NUMBER: {foundation.pan}</Text>
-            <Text style={s.regItem}>80G NUMBER: {foundation.reg80G}</Text>
-          </View>
-
-          {/* Footer */}
-          <View style={s.footerRow}>
-            <View style={s.footerLeft}>
-              <Text style={s.footerText}>
-                We hereby confirm that the aforementioned donation has been received by
-                HUManity organisation, {foundation.city}.
-              </Text>
-              <Text style={s.footerText}>
-                In case of queries, reach out to us at{" "}
-                <Text style={s.footerBold}>{foundation.email}</Text>
+          {/* Signature row */}
+          <View style={s.footerSig}>
+            <View style={s.sigLeft}>
+              <Text style={s.sigLeftText}>
+                For queries, reach us at{" "}
+                <Text style={s.sigLeftBold}>{foundation.email}</Text>
                 {"\n"}or visit{" "}
-                <Text style={s.footerBold}>{foundation.website}</Text>
+                <Text style={s.sigLeftBold}>{foundation.website}</Text>
               </Text>
             </View>
 
-            {/* Stamp (large) + Signature (large) stacked */}
-            <View style={s.footerRight}>
+            <View style={s.sigRight}>
               {useRealAssets ? (
                 <Image
                   src={`${ORIGIN}/assets/humanity_donation_stamp.png`}
-                  style={{ width: 115, height: 115 }}
+                  style={{ width: 90, height: 90 }}
                 />
               ) : (
                 <View style={{
-                  width: 115, height: 115, borderRadius: 57.5,
+                  width: 90, height: 90, borderRadius: 45,
                   borderWidth: 2, borderColor: BLUE,
+                  backgroundColor: BLUE_LT,
                   alignItems: "center", justifyContent: "center",
                 }}>
-                  <Text style={{ fontSize: 6, color: BLUE, textAlign: "center" }}>
-                    {"HUMANITY\nUPLIFTING\nMANKIND\nFOUNDATION\nNGO REG."}
+                  <Text style={{ fontSize: 6, fontFamily: "Helvetica-Bold", color: BLUE, textAlign: "center", lineHeight: 1.5 }}>
+                    {"DONATION\nACKNOWLEDGED\nHUManity\nFoundation"}
                   </Text>
                 </View>
               )}
-              {useRealAssets ? (
+              {useRealAssets && (
                 <Image
                   src={`${ORIGIN}/assets/Abhishek Sign - Edited.png`}
-                  style={{ width: 115, height: 48, marginTop: 6 }}
+                  style={{ width: 100, height: 42, marginTop: 6 }}
                 />
-              ) : (
-                <View style={{ width: 115, height: 48, marginTop: 6 }} />
               )}
-              <Text style={s.sigLabel}>Authorised Signature</Text>
+              <Text style={s.sigName}>Authorised Signature</Text>
+              <Text style={s.sigDesignation}>HUManity Foundation</Text>
             </View>
           </View>
 
         </View>
+
+        {/* ── BOTTOM BAR ── */}
+        <View style={s.bottomBar}>
+          <Text style={s.bottomContact}>
+            <Text style={s.bottomContactBold}>{foundation.email}</Text>
+            {"  |  "}
+            {foundation.website}
+          </Text>
+          <Text style={s.bottomThankyou}>Thank you for your generous contribution.</Text>
+        </View>
+
       </Page>
     </Document>
   );

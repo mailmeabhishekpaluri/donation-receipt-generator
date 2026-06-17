@@ -60,11 +60,15 @@ export default function Home() {
   }
 
   async function previewSingle(donor: Donor) {
+    // Open synchronously before any await so the popup blocker doesn't fire
+    const win = window.open("", "_blank");
+    if (!win) { alert("Allow popups for this site to preview PDFs."); return; }
     try {
       const blob = await makePdfBlob(donor);
       const url = URL.createObjectURL(blob);
-      window.open(url, "_blank");
+      win.location.href = url;
     } catch (e) {
+      win.close();
       alert("PDF generation failed: " + (e instanceof Error ? e.message : String(e)));
     }
   }
